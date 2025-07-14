@@ -1,6 +1,5 @@
-// app.js - Versão Final
 document.addEventListener('DOMContentLoaded', async () => {
-    // Proteção e Dados do Usuário
+    //protecao
     const loggedInUsername = localStorage.getItem('loggedInUser');
     const userRole = localStorage.getItem('userRole');
 
@@ -12,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const db = new PouchDB('brainwashing');
     let currentUserDoc = null;
 
-    // Referências do DOM
+    //busca no dom
     const navbar = document.getElementById('navbar');
     const profileButton = document.getElementById('profileButton');
     const profileDropdown = document.getElementById('profileDropdown');
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userAvatar = document.getElementById('user-avatar');
     const navbarCategoriesGrid = document.getElementById('navbar-categories-grid');
 
-    // Modais
+    //modals
     const accountModal = document.getElementById('accountModal');
     const closeAccountBtn = document.getElementById('closeAccountBtn');
     const modalBody = document.getElementById('modalBody');
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closeTrailerBtn = document.getElementById('closeTrailerBtn');
     const playerContainer = document.getElementById('youtube-player-container');
 
-    // FUNÇÕES
+    //funcoes
     async function fetchCurrentUser() {
         try {
             const result = await db.find({ selector: { username: loggedInUsername } });
@@ -55,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+
     async function fetchAndDisplayMovies() {
         const popularGrid = document.getElementById('popular-grid');
         const recentGrid = document.getElementById('recent-grid');
@@ -64,19 +64,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const result = await db.find({ selector: { type: 'movie' } });
             const movies = result.docs;
 
-            // Limpa os grids
             popularGrid.innerHTML = '';
             recentGrid.innerHTML = '';
 
-            // Popula "Populares" (ex: todos os filmes)
             movies.forEach(movie => createMovieCard(movie, popularGrid));
 
-            // Popula "Recentes" (ex: os últimos 6, ordenados por ID que contém o timestamp)
             [...movies].sort((a, b) => b._id.localeCompare(a._id)).slice(0, 6).forEach(movie => createMovieCard(movie, recentGrid));
             
         } catch (e) { console.error("Erro ao exibir filmes", e); }
     }
 
+    //traz bg do filme
     function createMovieCard(movie, gridElement) {
         const movieCard = document.createElement('div');
         movieCard.className = 'bg-stone-800 rounded-lg overflow-hidden group cursor-pointer';
@@ -118,14 +116,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Funções dos Modais
     function openTrailerModal(videoId) {
-        // CORREÇÃO APLICADA AQUI
         playerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
         trailerModal.classList.add('is-visible');
     }
 
     function closeTrailerModal() {
         trailerModal.classList.remove('is-visible');
-        playerContainer.innerHTML = ''; // Para o vídeo
+        playerContainer.innerHTML = ''; 
     }
 
     function openAccountModal() {
@@ -138,13 +135,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`;
         accountModal.classList.add('is-visible');
         
-        // Adiciona o listener para o botão que acabamos de criar
         document.getElementById('changeAvatarBtn').addEventListener('click', () => {
             accountModal.classList.remove('is-visible');
             openIconModal();
         });
     }
 
+
+    //icons perfil
     function openIconModal() {
         const icons = ["fa-user-astronaut", "fa-user-secret", "fa-user-ninja", "fa-user-tie", "fa-user-graduate", "fa-user-doctor", "fa-cat", "fa-dog", "fa-dragon", "fa-hippo", "fa-otter", "fa-ghost"];
         iconGrid.innerHTML = '';
@@ -154,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         iconModal.classList.add('is-visible');
     }
 
-    // INICIALIZAÇÃO E EVENT LISTENERS
+    //logica para mostrar botao administrador
     currentUsernameElem.textContent = loggedInUsername;
     if (userRole !== 'admin') adminLink.style.display = 'none';
 
@@ -167,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'login.html';
     });
 
-    // Listeners dos Modais
+    //listeners do modals do profile button
     openContaBtn.addEventListener('click', (e) => { e.preventDefault(); openAccountModal(); });
     closeAccountBtn.addEventListener('click', () => accountModal.classList.remove('is-visible'));
 
@@ -191,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
     
+    //modal do trailer
     closeTrailerBtn.addEventListener('click', closeTrailerModal);
     trailerModal.addEventListener('click', (e) => { if (e.target === trailerModal) closeTrailerModal(); });
     document.getElementById('popular-grid').addEventListener('click', (e) => {
@@ -202,7 +201,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(card) openTrailerModal(card.dataset.trailerId);
     });
 
-    // Carregamento dos dados iniciais
+    //traz dados iniciais
     await fetchCurrentUser();
     await fetchAndDisplayMovies();
     await displayNavbarCategories();

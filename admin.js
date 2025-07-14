@@ -1,4 +1,3 @@
-// admin.js - Versão Final
 document.addEventListener('DOMContentLoaded', async () => {
     // Proteção de Rota e Permissão
     const loggedInUsername = localStorage.getItem('loggedInUser');
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // LÓGICA DE CATEGORIAS
+    //categorias
     async function populateCategoryDatalist() {
         if (!categoryList) return;
         const result = await db.find({ selector: { type: 'movie' }, fields: ['category'] });
@@ -95,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Lógica do Modal de Edição
+    //logica modal e edicoes
     async function openEditModal(movieId) {
         try {
             const movieDoc = await db.get(movieId);
@@ -139,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Evento: Adicionar Filme
+    //adicionar filmes
     if (addMovieForm) {
         addMovieForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -164,14 +163,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Evento de Delegação para botões de Excluir e Editar
+    //eventos pra add e exclusão
     document.body.addEventListener('click', async (event) => {
         const target = event.target;
         const docId = target.dataset.id;
 
         if (!docId) return;
 
-        // Ação de Excluir
+        //exclui
         if (target.classList.contains('btn-delete')) {
             const isConfirmed = window.confirm('Tem certeza que deseja excluir este item?');
             if (isConfirmed) {
@@ -187,19 +186,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 } catch (err) { console.error('Erro ao excluir:', err); }
             }
         }
-        // Ação de Editar
+        //add
         else if (target.classList.contains('btn-edit-url')) {
             openEditModal(docId);
         }
     });
     
-    // Listeners para fechar o modal
+    //fechar o modal
     closeModalBtn.addEventListener('click', closeEditModal);
     editUrlModal.addEventListener('click', (e) => {
         if (e.target === editUrlModal) closeEditModal();
     });
 
-    // Inicialização
     await displayUsers();
     await displayMovies();
     await populateCategoryDatalist();
