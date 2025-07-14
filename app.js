@@ -149,9 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===================================
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
-            // Em uma aplicação real, você limparia o token/sessão aqui
-            alert('Você foi desconectado!');
-            // Redireciona para a página de login após o logout
             window.location.href = 'index.html'; // Ou sua página de login
         });
     }

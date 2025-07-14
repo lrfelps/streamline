@@ -300,7 +300,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await db.createIndex({
             index: { fields: ['email'] }
         });
-        console.log("Índices do PouchDB criados com sucesso para 'username' e 'email'.");
 
     } catch (err) {
         // O erro 409 significa que o índice já existe, o que é normal.
