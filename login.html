@@ -12,10 +12,10 @@
 <body class="body-custom-bg">
     <div class="min-h-screen flex flex-col items-center justify-center p-4">
 
-        <div class="header">
+        <header class="header">
             <h1>StreamLine</h1>
             <p>Faça login ou cadastre-se para começar a maratona.</p>
-        </div>
+        </header>
 
         <div id="authContainer" class="auth-container">
 
@@ -30,69 +30,59 @@
                         <label for="password">Senha</label>
                         <input type="password" id="password" required class="form-input">
                     </div>
-                    <button type="submit" class="btn-primary">
-                        Entrar
-                    </button>
+                    <button type="submit" class="btn-primary">Entrar</button>
                 </form>
-                <p class="auth-switch">
-                    Não tem uma conta? <a href="#" id="openRegisterFromLogin">Cadastre-se</a>
-                </p>
+                <div class="form-footer">
+                    <p>Não tem uma conta? <a href="#" id="openRegisterFromLogin">Cadastre-se</a></p>
+                </div>
             </div>
 
             <div id="registerFormContainer" class="form-container-padding" style="display: none;">
                 <h2 class="form-title">Criar Conta</h2>
-                <form id="registerForm" class="form-spacing">
+                <form id="registerForm" class="form-spacing" novalidate>
                     <div class="input-group">
                         <label for="regEmail">E-mail</label>
-                        <input type="email" id="regEmail" required class="form-input"
-                            placeholder="seuemail@exemplo.com">
-                        <p class="error-message" id="emailError"></p>
+                        <input type="email" id="regEmail" required class="form-input">
+                        <span id="emailError" class="error-message"></span>
                     </div>
                     <div class="input-group">
-                        <label for="regUsername">Escolha um Nome de Usuário</label>
-                        <input type="text" id="regUsername" required class="form-input" placeholder="minha_conta">
-                        <p class="error-message" id="usernameError"></p>
+                        <label for="regUsername">Nome de Usuário</label>
+                        <input type="text" id="regUsername" required class="form-input">
+                        <span id="usernameError" class="error-message"></span>
                     </div>
                     <div class="input-group">
-                        <label for="regPassword">Crie uma Senha</label>
-                        <input type="password" id="regPassword" required class="form-input" placeholder="••••••••">
-                        <p class="error-message" id="passwordError"></p>
+                        <label for="regPassword">Senha</label>
+                        <input type="password" id="regPassword" required class="form-input">
+                        <span id="passwordError" class="error-message"></span>
                     </div>
                     <div class="input-group">
-                        <label for="regConfirmPassword">Repita a Senha</label>
-                        <input type="password" id="regConfirmPassword" required class="form-input"
-                            placeholder="••••••••">
-                        <p class="error-message" id="confirmPasswordError"></p>
+                        <label for="regConfirmPassword">Confirmar Senha</label>
+                        <input type="password" id="regConfirmPassword" required class="form-input">
+                        <span id="confirmPasswordError" class="error-message"></span>
                     </div>
-
-                    <div class="input-group toggle-admin">
-                        <label class="toggle-switch">
+                    <div class="input-group admin-toggle-group">
+                        <label class="switch">
                             <input type="checkbox" id="isAdminToggle">
-                            <span class="slider round"></span>
+                            <span class="slider"></span>
                         </label>
                         <label for="isAdminToggle" class="toggle-label">Sou Administrador</label>
                     </div>
-
                     <div class="input-group admin-secret-password-group">
-                        <label for="adminSecretPassword">Senha Secreta de Administrador</label>
-                        <input type="password" id="adminSecretPassword" class="form-input" placeholder="•••">
-                        <p class="error-message" id="adminSecretPasswordError"></p>
+                        <label for="adminSecretPassword">Senha Secreta de Admin</label>
+                        <input type="password" id="adminSecretPassword" class="form-input">
+                        <span id="adminSecretPasswordError" class="error-message"></span>
                     </div>
-
-                    <button type="submit" class="btn-primary">
-                        Cadastrar
-                    </button>
+                    <button type="submit" class="btn-primary">Cadastrar</button>
                 </form>
-                <p class="auth-switch">
-                    Já tem uma conta? <a href="#" id="openLoginFromRegister">Faça Login</a>
-                </p>
+                <div class="form-footer">
+                    <p>Já tem uma conta? <a href="#" id="openLoginFromRegister">Faça Login</a></p>
+                </div>
             </div>
+            <p id="authMessage" class="auth-message"></p>
         </div>
-        <p id="authMessage" class="auth-message"></p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
     <script src="login.js"></script>
 </body>
-
 </html>

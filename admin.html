@@ -3,107 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Administração</title>   
+    <title>Painel de Administração</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style-admin.css">
-
 </head>
 <body>
-
     <div class="main-container">
         <header class="header">
             <h1>Painel de Administração</h1>
-            <p>Gerencie filmes e usuários da plataforma.</p>
+            <p>Gerencie filmes e usuários da plataforma. <a href="index.html" style="color: var(--color-purple-400);">Voltar para Home</a></p>
         </header>
 
-        <section id="movie-management" class="panel-section"> 
-            <div id="addMovieFormContainer" style="padding: var(--spacing-8);">
+        <section id="movie-management" class="panel-section">
+            <div style="padding: var(--spacing-8);">
                 <h2 class="form-title">Gerenciar Filmes</h2>
-                
                 <form id="addMovieForm" class="form-spacing">
-                    <div class="input-group">
-                        <label for="movieTitle">Título do Filme</label>
-                        <input type="text" id="movieTitle" name="movieTitle" class="form-input" placeholder="Ex: A Origem" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="movieYear">Ano de Lançamento</label>
-                        <input type="number" id="movieYear" name="movieYear" class="form-input" placeholder="Ex: 2010" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="movieGenre">Gênero</label>
-                        <input type="text" id="movieGenre" name="movieGenre" class="form-input" placeholder="Ex: Ficção Científica" required>
-                    </div>
                     <button type="submit" class="btn-primary">Cadastrar Filme</button>
                 </form>
-
                 <div id="movieListContainer" style="margin-top: var(--spacing-8);">
-                    <h3 class="form-title" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-4);">Filmes Cadastrados</h3>
-                    <div id="movieList">
-                        <div class="list-item">
-                            <div class="list-item-info">
-                                <p>A Origem</p>
-                                <span>2010 - Ficção Científica</span>
-                            </div>
-                            <div class="list-item-actions">
-                                <button class="btn-danger">Excluir</button>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-info">
-                                <p>O Poderoso Chefão</p>
-                                <span>1972 - Drama</span>
-                            </div>
-                            <div class="list-item-actions">
-                                <button class="btn-danger">Excluir</button>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="form-title" style="font-size: 1.25rem; margin-bottom: 1rem;">Filmes Cadastrados</h3>
+                    <div id="movieList"></div>
                 </div>
             </div>
         </section>
 
         <section id="user-management" class="panel-section">
-            <div id="userListContainer" style="padding: var(--spacing-8);">
+            <div style="padding: var(--spacing-8);">
                 <h2 class="form-title">Gerenciar Usuários</h2>
-
-                <div id="userList">
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <p>ana.silva@email.com</p>
-                            <span>Status: <strong class="status active">Ativo</strong></span>
-                        </div>
-                        <div class="list-item-actions">
-                            <button class="btn-secondary">Banir</button>
-                            <button class="btn-danger">Excluir</button>
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <p>carlos.santos@email.com</p>
-                            <span>Status: <strong class="status active">Ativo</strong></span>
-                        </div>
-                        <div class="list-item-actions">
-                            <button class="btn-secondary">Banir</button>
-                            <button class="btn-danger">Excluir</button>
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <p>joao.banido@email.com</p>
-                            <span>Status: <strong class="status banned">Banido</strong></span>
-                        </div>
-                        <div class="list-item-actions">
-                            <button class="btn-secondary">Desbanir</button>
-                            <button class="btn-danger">Excluir</button>
-                        </div>
-                    </div>
-                </div>
+                <div id="userList"></div>
             </div>
         </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
