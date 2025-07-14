@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamLine - Login</title>
-    
-    <!-- Framework Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Link para o seu arquivo de estilo externo -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="text-stone-200">
 
     <!-- Container que centraliza todo o conteúdo na tela -->
@@ -23,8 +21,9 @@
         </div>
 
         <!-- Card de Autenticação com Efeito de Vidro -->
-        <div id="authContainer" class="auth-container w-full max-w-md bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl shadow-black/30 border border-white/10 overflow-hidden">
-            
+        <div id="authContainer"
+            class="auth-container w-full max-w-md bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl shadow-black/30 border border-white/10 overflow-hidden">
+
             <!-- Formulário de Login -->
             <div id="loginFormContainer" class="p-8 md:p-10">
                 <h2 class="text-2xl font-semibold text-white text-center mb-6">Login</h2>
@@ -32,20 +31,21 @@
                     <div class="input-group">
                         <label for="username" class="block text-sm font-medium text-stone-300">Nome de Usuário</label>
                         <input type="text" id="username" required
-                               class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
+                            class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
                     </div>
                     <div class="input-group">
                         <label for="password" class="block text-sm font-medium text-stone-300">Senha</label>
                         <input type="password" id="password" required
-                               class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
+                            class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
                     </div>
                     <button type="submit"
-                            class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5 transition-all duration-300">
+                        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5 transition-all duration-300">
                         Entrar
                     </button>
                 </form>
                 <p class="auth-switch text-center text-sm text-stone-400 mt-6">
-                    Não tem uma conta? <a href="#" id="openRegisterFromLogin" class="font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-300">Cadastre-se</a>
+                    Não tem uma conta? <a href="#" id="openRegisterFromLogin"
+                        class="font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-300">Cadastre-se</a>
                 </p>
             </div>
 
@@ -54,35 +54,33 @@
                 <h2 class="text-2xl font-semibold text-white text-center mb-6">Criar Conta</h2>
                 <form id="registerForm" class="space-y-6">
                     <div class="input-group">
-                        <label for="regUsername" class="block text-sm font-medium text-stone-300">Escolha um Nome de Usuário</label>
+                        <label for="regUsername" class="block text-sm font-medium text-stone-300">Escolha um Nome de
+                            Usuário</label>
                         <input type="text" id="regUsername" required
-                               class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
+                            class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
                     </div>
                     <div class="input-group">
                         <label for="regPassword" class="block text-sm font-medium text-stone-300">Crie uma Senha</label>
                         <input type="password" id="regPassword" required
-                               class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
+                            class="mt-1 block w-full bg-white/10 border border-transparent focus:border-purple-500 focus:ring-2 focus:ring-purple-500 rounded-lg py-2 px-4 text-white transition-all duration-300 placeholder-stone-500">
                     </div>
                     <button type="submit"
-                            class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5 transition-all duration-300">
+                        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5 transition-all duration-300">
                         Cadastrar
                     </button>
                 </form>
                 <p class="auth-switch text-center text-sm text-stone-400 mt-6">
-                    Já tem uma conta? <a href="#" id="openLoginFromRegister" class="font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-300">Faça Login</a>
+                    Já tem uma conta? <a href="#" id="openLoginFromRegister"
+                        class="font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-300">Faça
+                        Login</a>
                 </p>
             </div>
         </div>
-        
-        <!-- Mensagem de Status -->
         <p id="authMessage" class="auth-message"></p>
     </div>
-
-    <!-- SCRIPTS PARA A PÁGINA DE LOGIN -->
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
-    
-    <!-- Lembre-se de renomear seu arquivo 'login.js' para 'auth.js' se ainda não o fez -->
-    <script src="login.js"></script> 
+    <script src="login.js"></script>
 </body>
+
 </html>

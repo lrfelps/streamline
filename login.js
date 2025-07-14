@@ -1,6 +1,4 @@
-// auth.js
 
-// --- Inicialização do Banco de Dados PouchDB para usuários ---
 const usersDB = new PouchDB('brainwashing');
 
 // --- Elementos de Autenticação (Login/Cadastro) ---
@@ -45,7 +43,6 @@ async function getNextUserId() {
             .filter(num => !isNaN(num));
 
         if (userIds.length === 0) {
-            // Começa com 'usuario_2' como solicitado.
             return 'usuario_2';
         }
 
@@ -54,7 +51,7 @@ async function getNextUserId() {
 
     } catch (err) {
         console.error("Erro ao gerar o próximo ID de usuário:", err);
-        // Fallback em caso de erro
+        // Fallback caso dê bigode
         return `usuario_${new Date().getTime()}`;
     }
 }
@@ -85,7 +82,6 @@ if (registerForm) {
                 return;
             }
 
-            // Agora a chamada para getNextUserId() vai funcionar!
             const newUserId = await getNextUserId();
 
             const userDoc = {
@@ -99,7 +95,7 @@ if (registerForm) {
             authMessageElement.textContent = `Usuário '${username}' cadastrado com sucesso! Agora você pode fazer login.`;
             authMessageElement.style.color = 'green';
             registerForm.reset();
-            
+
             setTimeout(() => {
                 document.getElementById('loginFormContainer').style.display = 'block';
                 document.getElementById('registerFormContainer').style.display = 'none';
@@ -135,7 +131,7 @@ if (loginForm) {
 
             if (result.docs.length > 0) {
                 const user = result.docs[0];
-                if (user.password === password) { // ATENÇÃO: Comparar hash em produção!
+                if (user.password === password) {
                     localStorage.setItem('loggedInUser', user.username);
                     window.location.href = 'index.html';
                 } else {
@@ -172,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
         console.error("Erro ao criar índice no banco de dados:", err);
     }
-    
+
     const loggedInUser = localStorage.getItem('loggedInUser');
     const onLoginPage = !!loginForm;
 
@@ -182,7 +178,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } else {
         if (!loggedInUser) {
-            // Removido o alert para uma melhor experiência do usuário
             window.location.href = 'login.html';
         } else {
             document.getElementById('currentUsername').textContent = loggedInUser;
