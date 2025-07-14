@@ -3,42 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema - Página Principal</title>
-    <!-- Link para o arquivo de estilo -->
+    <title>StreamLine - Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="header">
-        <h1>Bem-vindo ao Meu Sistema!</h1>
-        <p>Explore o conteúdo abaixo. Alguns itens podem exigir login para acesso completo.</p>
-        <div id="loggedInInfo" class="logged-in-message" style="display: none;">
-            Olá, <span id="currentUsername"></span>! <button id="logoutButton">Sair</button>
+        <h1>Bem-vindo ao StreamLine!</h1>
+        <div id="loggedInInfo" class="logged-in-message">
+            <p>Olá, <span id="currentUsername"></span>!</p>
+            <button id="logoutButton">Sair</button>
         </div>
     </div>
+    <main>
+        <h2>Página Inicial</h2>
+        <p>Conteúdo principal para usuários logados.</p>
+    </main>
 
-    <div class="content-section">
-        <h3>Conteúdo Gratuito</h3>
-        <p>Este é um parágrafo de conteúdo que todos podem ver sem precisar de login. Informações gerais e introdutórias.</p>
-        <p>Você pode adicionar mais blocos de conteúdo gratuito aqui.</p>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
+    <script src="login.js"></script> 
 
-    <div class="content-section">
-        <h3>Conteúdo Premium - Artigo Exclusivo</h3>
-        <p>Este artigo oferece insights aprofundados sobre [Tópico]. Para ler o artigo completo e ter acesso a todas as funcionalidades...</p>
-        <button class="access-restricted" data-content="artigo-exclusivo">Acessar Artigo Completo</button>
-    </div>
-
-    <div class="content-section">
-        <h3>Conteúdo Premium - Vídeo Interativo</h3>
-        <p>Assista a este vídeo interativo para aprender sobre [Outro Tópico]. É necessário fazer login para continuar...</p>
-        <button class="access-restricted" data-content="video-interativo">Assistir Vídeo</button>
-    </div>
-
-    <!-- Placeholder onde o conteúdo de login.html será carregado -->
-    <div id="modal-placeholder"></div>
-
-    <!-- Biblioteca PouchDB -->
-    <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>

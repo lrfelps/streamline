@@ -1,0 +1,19 @@
+/* Google Fonts: Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Estilos Globais */
+body {
+    /* Define a fonte principal para todo o documento */
+    font-family: 'Poppins', sans-serif;
+    
+    /* Fundo escuro com um gradiente sutil para dar profundidade */
+    background-color: #0c0a09; /* Cor de fallback caso o gradiente não carregue */
+    background-image: radial-gradient(circle at 1% 1%, #27272a, #0c0a09 90%);
+}
+
+/* Estilo para a mensagem de erro/sucesso (opcional, pode ser feito com Tailwind também) */
+.auth-message {
+    text-align: center;
+    font-weight: 500; /* Corresponde a 'font-medium' do Tailwind */
+    margin-top: 1rem; /* Corresponde a 'mt-4' do Tailwind */
+}
