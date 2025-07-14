@@ -1,4 +1,4 @@
-const db = new PouchDB('brainwashing');
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById('navbar');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //perfil
     if (profileButton) {
         profileButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // Impede que o clique feche o menu imediatamente
+            event.stopPropagation(); 
             profileDropdown.classList.toggle('hidden');
         });
     }
@@ -30,4 +30,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
 });

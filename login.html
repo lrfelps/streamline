@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="body-custom-bg"> <div class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="body-custom-bg">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
 
         <div class="header">
             <h1>StreamLine</h1>
@@ -42,12 +43,26 @@
                 <h2 class="form-title">Criar Conta</h2>
                 <form id="registerForm" class="form-spacing">
                     <div class="input-group">
+                        <label for="regEmail">E-mail</label>
+                        <input type="email" id="regEmail" required class="form-input"
+                            placeholder="seuemail@exemplo.com">
+                        <p class="error-message" id="emailError"></p>
+                    </div>
+                    <div class="input-group">
                         <label for="regUsername">Escolha um Nome de Usuário</label>
-                        <input type="text" id="regUsername" required class="form-input">
+                        <input type="text" id="regUsername" required class="form-input" placeholder="minha_conta">
+                        <p class="error-message" id="usernameError"></p>
                     </div>
                     <div class="input-group">
                         <label for="regPassword">Crie uma Senha</label>
-                        <input type="password" id="regPassword" required class="form-input">
+                        <input type="password" id="regPassword" required class="form-input" placeholder="••••••••">
+                        <p class="error-message" id="passwordError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="regConfirmPassword">Repita a Senha</label>
+                        <input type="password" id="regConfirmPassword" required class="form-input"
+                            placeholder="••••••••">
+                        <p class="error-message" id="confirmPasswordError"></p>
                     </div>
                     <button type="submit" class="btn-primary">
                         Cadastrar

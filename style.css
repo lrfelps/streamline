@@ -115,6 +115,13 @@ body {
     overflow: hidden;
 }
 
+.error-message {
+    color: var(--color-error); /* Usando a variável definida para cor de erro */
+    font-size: 0.75rem; /* Menor que o texto normal */
+    margin-top: 0.25rem; /* Pequena margem superior */
+    min-height: 1rem; /* Garante que o espaço seja reservado mesmo quando vazio */
+}
+
 /* ===================================== */
 /* 6. Formulários (Login/Cadastro) */
 /* ===================================== */
@@ -176,9 +183,6 @@ body {
     outline: none; /* Remove o outline padrão do navegador */
 }
 
-/* ===================================== */
-/* 7. Botões */
-/* ===================================== */
 
 .btn-primary {
     width: 100%;
@@ -200,9 +204,6 @@ body {
     transform: translateY(-0.125rem); /* hover:-translate-y-0.5 */
 }
 
-/* ===================================== */
-/* 8. Links de Troca de Formulário */
-/* ===================================== */
 
 .auth-switch {
     text-align: center;
@@ -231,12 +232,12 @@ body {
     display: none;
 }
 
-/* Mensagem de autenticação (sucesso/erro) */
+
 .auth-message {
     text-align: center;
-    font-size: var(--font-size-base); /* Ajustado para 1rem */
+    font-size: var(--font-size-base);
     font-weight: 500;
-    margin-top: var(--spacing-4); /* mt-4 */
+    margin-top: var(--spacing-4); 
 }
 
 .auth-message.success {

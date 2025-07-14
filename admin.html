@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Ajuste do layout principal para páginas com conteúdo extenso */
+        body {
+            background-attachment: fixed; /* Mantém o gradiente fixo durante o scroll */
+        }
+        .main-container {
+            width: 100%;
+            max-width: 1200px; /* Aumenta a largura máxima para o painel */
+            margin: 0 auto;
+            padding: var(--spacing-8) var(--spacing-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-8); /* Espaço entre os cards */
+        }
+
+        /* Estilo para a lista de itens (filmes/usuários) */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: var(--spacing-3) var(--spacing-4);
+            border-radius: 0.5rem; /* rounded-lg */
+            margin-bottom: var(--spacing-2);
+            transition: background-color 0.3s;
+        }
+        .list-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .list-item-info p {
+            margin: 0;
+            color: var(--color-text-primary);
+            font-size: var(--font-size-base);
+        }
+        .list-item-info span {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        .list-item-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+        
+        /* Botões de ação secundários (Banir, Editar, etc.) */
+        .btn-secondary, .btn-danger {
+            padding: var(--spacing-1) var(--spacing-3);
+            border: none;
+            border-radius: 0.375rem; /* rounded-md */
+            color: var(--color-white);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            transform: translateY(0);
+        }
+        .btn-secondary {
+            background-color: var(--color-placeholder); /* stone-500 */
+        }
+        .btn-secondary:hover {
+            background-color: #a8a29e; /* stone-400 */
+            transform: translateY(-1px);
+        }
+        .btn-danger {
+            background-color: var(--color-error); /* red-500 */
+        }
+        .btn-danger:hover {
+            background-color: #dc2626; /* red-600 */
+            transform: translateY(-1px);
+        }
+
+        /* Status do Usuário */
+        .status {
+            font-weight: 600;
+        }
+        .status.active {
+            color: var(--color-success);
+        }
+        .status.banned {
+            color: var(--color-error);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <header class="header">
+            <h1>Painel de Administração</h1>
+            <p>Gerencie filmes e usuários da plataforma.</p>
+        </header>
+
+        <section id="movie-management" class="auth-container">
+            <div id="addMovieFormContainer" style="padding: var(--spacing-8);">
+                <h2 class="form-title">Gerenciar Filmes</h2>
+                
+                <form id="addMovieForm" class="form-spacing">
+                    <div class="input-group">
+                        <label for="movieTitle">Título do Filme</label>
+                        <input type="text" id="movieTitle" name="movieTitle" class="form-input" placeholder="Ex: A Origem" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="movieYear">Ano de Lançamento</label>
+                        <input type="number" id="movieYear" name="movieYear" class="form-input" placeholder="Ex: 2010" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="movieGenre">Gênero</label>
+                        <input type="text" id="movieGenre" name="movieGenre" class="form-input" placeholder="Ex: Ficção Científica" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Cadastrar Filme</button>
+                </form>
+
+                <div id="movieListContainer" style="margin-top: var(--spacing-8);">
+                    <h3 class="form-title" style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-4);">Filmes Cadastrados</h3>
+                    <div id="movieList">
+                        <div class="list-item">
+                            <div class="list-item-info">
+                                <p>A Origem</p>
+                                <span>2010 - Ficção Científica</span>
+                            </div>
+                            <div class="list-item-actions">
+                                <button class="btn-danger">Excluir</button>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-info">
+                                <p>O Poderoso Chefão</p>
+                                <span>1972 - Drama</span>
+                            </div>
+                            <div class="list-item-actions">
+                                <button class="btn-danger">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="user-management" class="auth-container">
+            <div id="userListContainer" style="padding: var(--spacing-8);">
+                <h2 class="form-title">Gerenciar Usuários</h2>
+
+                <div id="userList">
+                    <div class="list-item">
+                        <div class="list-item-info">
+                            <p>ana.silva@email.com</p>
+                            <span>Status: <strong class="status active">Ativo</strong></span>
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn-secondary">Banir</button>
+                            <button class="btn-danger">Excluir</button>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-info">
+                            <p>carlos.santos@email.com</p>
+                             <span>Status: <strong class="status active">Ativo</strong></span>
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn-secondary">Banir</button>
+                            <button class="btn-danger">Excluir</button>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-info">
+                            <p>joao.banido@email.com</p>
+                            <span>Status: <strong class="status banned">Banido</strong></span>
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn-secondary">Desbanir</button>
+                            <button class="btn-danger">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
