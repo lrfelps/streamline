@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Administração</title>  
+    <title>Painel de Administração</title>   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style-admin.css">
+
 </head>
 <body>
 
@@ -17,7 +19,7 @@
             <p>Gerencie filmes e usuários da plataforma.</p>
         </header>
 
-        <section id="movie-management" class="auth-container">
+        <section id="movie-management" class="panel-section"> 
             <div id="addMovieFormContainer" style="padding: var(--spacing-8);">
                 <h2 class="form-title">Gerenciar Filmes</h2>
                 
@@ -63,7 +65,7 @@
             </div>
         </section>
 
-        <section id="user-management" class="auth-container">
+        <section id="user-management" class="panel-section">
             <div id="userListContainer" style="padding: var(--spacing-8);">
                 <h2 class="form-title">Gerenciar Usuários</h2>
 
@@ -81,7 +83,7 @@
                     <div class="list-item">
                         <div class="list-item-info">
                             <p>carlos.santos@email.com</p>
-                             <span>Status: <strong class="status active">Ativo</strong></span>
+                            <span>Status: <strong class="status active">Ativo</strong></span>
                         </div>
                         <div class="list-item-actions">
                             <button class="btn-secondary">Banir</button>
