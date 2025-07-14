@@ -32,9 +32,30 @@
     --font-size-5xl: 3rem;
 }
 
-/* =================================== */
-/* ESTILOS GLOBAIS */
-/* =================================== */
+
+.header {
+    text-align: center; /* Centraliza todo o texto */
+    margin-bottom: var(--spacing-8); /* Adiciona um espaço abaixo do cabeçalho */
+}
+
+/* Título Principal (StreamLine) */
+.header h1 {
+    font-size: var(--font-size-5xl, 3rem); /* Tamanho grande da fonte */
+    font-weight: 700; /* Negrito */
+    color: var(--color-white); /* Cor branca, de alto contraste */
+    line-height: 1.1;
+}
+
+/* Subtítulo (Faça login...) */
+.header p {
+    color: var(--color-text-secondary, #a8a29e); /* Cor de texto secundária, mais suave */
+    margin-top: var(--spacing-2); /* Pequeno espaço acima do subtítulo */
+    font-size: var(--font-size-base, 1rem);
+}
+
+
+
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--color-dark-bg);
@@ -43,14 +64,10 @@ body {
     padding: 0;
 }
 
-/* Fundo específico para a página de login */
 .body-custom-bg {
     background-image: radial-gradient(circle at 1% 1%, var(--color-darker-bg), var(--color-dark-bg) 90%);
 }
 
-/* =================================== */
-/* HEADER (HOME) */
-/* =================================== */
 .header-video-container {
     position: relative;
     width: 100%;
@@ -80,9 +97,6 @@ body {
     z-index: 1;
 }
 
-/* =================================== */
-/* ESTILOS DE LOGIN E CADASTRO */
-/* =================================== */
 .auth-container {
     width: 100%;
     max-width: 28rem;
@@ -155,23 +169,49 @@ body {
     color: var(--color-white);
 }
 
-/* Toggle Switch de Admin */
-.admin-toggle-group { display: flex; align-items: center; gap: var(--spacing-2); }
-.toggle-label { cursor: pointer; color: var(--color-text-label); }
-.switch { position: relative; display: inline-block; width: 52px; height: 28px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--color-placeholder); border-radius: 28px; transition: .4s; }
+.admin-toggle-group { 
+    display: flex; 
+    align-items: center; 
+    gap: var(--spacing-2); 
+}
+
+.toggle-label { 
+    cursor: pointer; 
+    color: var(--color-text-label);
+ }
+
+.switch { 
+    position: relative; 
+    display: inline-block; 
+    width: 52px; 
+    height: 28px; 
+}
+
+.switch input { 
+    opacity: 0; 
+    width: 0; 
+    height: 0; 
+}
+
+.slider { 
+    position: absolute; 
+    cursor: pointer; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background-color: var(--color-placeholder); 
+    border-radius: 28px; 
+    transition: .4s;
+ }
+
 .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: .4s; }
 .switch input:checked + .slider { background-image: linear-gradient(to right, var(--color-purple-600), var(--color-blue-600)); }
 .switch input:checked + .slider:before { transform: translateX(24px); }
 
-/* Visibilidade do campo de senha secreta */
 .admin-secret-password-group { max-height: 0; opacity: 0; overflow: hidden; margin: 0 !important; padding: 0; transition: all 0.4s ease-in-out; }
 .admin-secret-password-group.is-visible { max-height: 120px; opacity: 1; margin-bottom: var(--spacing-6) !important; }
 
-/* =================================== */
-/* ESTILOS DOS MODAIS (HOME) */
-/* =================================== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -215,7 +255,6 @@ body {
     cursor: pointer;
 }
 
-/* MODAL DO TRAILER */
 .trailer-content {
     position: relative;
     width: 90%;
@@ -230,11 +269,11 @@ body {
     border: none;
 }
 
-/* MODAL DE ÍCONES */
+
 #icon-grid {
     max-height: 50vh;
     overflow-y: auto;
-    padding-right: 1rem; /* Espaço para a barra de rolagem */
+    padding-right: 1rem; 
 }
 .icon-option {
     display: flex;
