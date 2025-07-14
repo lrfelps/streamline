@@ -25,7 +25,7 @@ const emailError = document.getElementById('emailError');
 const usernameError = document.getElementById('usernameError');
 const passwordError = document.getElementById('passwordError');
 const confirmPasswordError = document.getElementById('confirmPasswordError');
-const adminSecretPasswordError = document.getElementById('adminSecretPasswordError'); // Adicionado: Elemento de erro para a senha secreta do admin
+const adminSecretPasswordError = document.getElementById('adminSecretPasswordError'); // Elemento de erro para a senha secreta do admin
 
 //alterna entre login e cadastro
 const openRegisterFromLoginButton = document.getElementById('openRegisterFromLogin');
@@ -33,7 +33,7 @@ const openLoginFromRegisterButton = document.getElementById('openLoginFromRegist
 
 const logoutButton = document.getElementById('logoutButton');
 
-// Adicionado: Elementos do interruptor de administrador e campo de senha secreta
+// Elementos do interruptor de administrador e campo de senha secreta
 const isAdminToggle = document.getElementById('isAdminToggle');
 const adminSecretPasswordGroup = document.querySelector('.admin-secret-password-group');
 const adminSecretPasswordInput = document.getElementById('adminSecretPassword');
@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Validação da senha secreta de administrador (frontend)
             let isAdminValid = true;
+            let userRole = "user"; // <-- MUDANÇA AQUI: Define a ROLE padrão como "user"
             if (isAdminToggle && isAdminToggle.checked) {
                 const secretPassword = adminSecretPasswordInput ? adminSecretPasswordInput.value : '';
                 const requiredSecretPassword = "calabresinhafrita"; // A senha secreta esperada
@@ -239,6 +240,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showError(adminSecretPasswordError, 'Senha secreta incorreta.');
                     if (adminSecretPasswordInput) adminSecretPasswordInput.focus();
                     isAdminValid = false;
+                } else {
+                    userRole = "admin"; // <-- MUDANÇA AQUI: Se a senha secreta estiver correta, define a ROLE como "admin"
                 }
             }
 
@@ -280,7 +283,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     email: email, // Adicionando o email
                     username: username,
                     password: password, // Lembre-se: Em um app real, a senha DEVE ser hashada!
-                    isAdmin: isAdminToggle ? isAdminToggle.checked : false, // Salva o status de admin
+                    role: userRole, // <-- MUDANÇA AQUI: Salva a ROLE do usuário (user ou admin)
                     createdAt: new Date().toISOString()
                 };
 
@@ -339,7 +342,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const user = result.docs[0];
                     if (user.password === password) { // Lembre-se: Senha DEVE ser hashada!
                         localStorage.setItem('loggedInUser', user.username);
-                        localStorage.setItem('isAdmin', user.isAdmin ? 'true' : 'false'); // Salva o status de admin no localStorage
+                        localStorage.setItem('userRole', user.role || 'user'); // <-- MUDANÇA AQUI: Salva a ROLE do usuário no localStorage
                         showAuthMessage('Login bem-sucedido! Redirecionando...', 'success'); 
                         setTimeout(() => {
                             window.location.href = 'index.html';
@@ -361,7 +364,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('loggedInUser');
-            localStorage.removeItem('isAdmin'); // Remove o status de admin ao deslogar
+            localStorage.removeItem('userRole'); // <-- MUDANÇA AQUI: Remove a ROLE do localStorage ao deslogar
             window.location.href = 'login.html';
         });
     }
@@ -378,15 +381,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
     } catch (err) {
+        // O erro 409 significa que o índice já existe, o que é normal.
+        // Outros erros devem ser logados.
         if (err.status !== 409) {
             console.error("Erro ao criar índice no banco de dados:", err);
-            showAuthMessage('DEU RUIM', 'error');
+            showAuthMessage('Erro ao preparar o banco de dados. Recarregue a página.', 'error');
         } else {
             console.log("Índices já existentes, pulando a criação.");
         }
     }
 
+    // Lógica de Redirecionamento (se o usuário está logado ou não)
     const loggedInUsername = localStorage.getItem('loggedInUser');
+    const userRole = localStorage.getItem('userRole'); // <-- MUDANÇA AQUI: Pega a ROLE do localStorage
+    // Verifica se estamos na página de login pelo ID do formulário
     const onLoginPage = !!document.getElementById('loginFormContainer');
 
     //obriga a logar
@@ -398,10 +406,156 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!loggedInUsername) {
             window.location.href = 'login.html';
         } else {
+            // Se logado e não na página de login, atualiza o nome de usuário na navbar
             const currentUsernameElement = document.getElementById('currentUsername');
             if (currentUsernameElement) {
                 currentUsernameElement.textContent = loggedInUsername;
             }
+            // Lógica de Navbar e Dropdown de Perfil (movida para dentro do DOMContentLoaded)
+            // Esses elementos só precisam ser inicializados se o usuário estiver logado e não na página de login
+            const navbar = document.getElementById('navbar');
+            const profileButton = document.getElementById('profileButton');
+            const profileDropdown = document.getElementById('profileDropdown');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const openContaBtn = document.getElementById('openContaModal');
+            const openAjudaBtn = document.getElementById('openAjudaModal');
+
+            // Lógica da Navbar (efeito de scroll)
+            if (navbar) { // Verifica se o elemento navbar existe na página
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('bg-stone-900', 'shadow-lg');
+                    } else {
+                        navbar.classList.remove('bg-stone-900', 'shadow-lg');
+                    }
+                });
+            }
+
+            // Lógica do Dropdown de Perfil
+            if (profileButton && profileDropdown) {
+                // Abrir/Fechar ao clicar no botão
+                profileButton.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    profileDropdown.classList.toggle('hidden');
+                });
+
+                // Fechar ao clicar fora
+                window.addEventListener('click', (event) => {
+                    if (!profileDropdown.classList.contains('hidden')) {
+                        if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                            profileDropdown.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+
+            // Lógica do Modal
+            // Declaração de modalContent movida para dentro do DOMContentLoaded
+            // para que loggedInUsername (do localStorage) esteja disponível
+            const modalContent = {
+                conta: {
+                    title: 'Gerenciar Conta',
+                    body: `
+                        <p>Aqui você pode alterar suas informações de perfil, como nome, e-mail e senha.</p>
+                        <div class="form-spacing" style="margin-top: var(--spacing-6);">
+                            <div class="input-group">
+                                <label for="userName">Nome</label>
+                                <input type="text" id="userName" class="form-input" value="${loggedInUsername || 'Usuário'}">
+                            </div>
+                            <div class="input-group">
+                                <label for="userEmail">Email</label>
+                                <input type="email" id="userEmail" class="form-input" value="seu-email@exemplo.com">
+                            </div>
+                            <button class="btn-primary" style="margin-top: var(--spacing-4);">Salvar Alterações</button>
+                        </div>
+                    `
+                },
+                ajuda: {
+                    title: 'Central de Ajuda',
+                    body: `
+                        <p>Bem-vindo à nossa central de ajuda. Se você estiver com problemas, verifique as perguntas frequentes abaixo ou entre em contato com o suporte.</p>
+                        <h4 style="color: var(--color-text-label); margin-top: var(--spacing-4);">Como altero minha senha?</h4>
+                        <p>Você pode alterar sua senha na seção 'Gerenciar Conta'.</p>
+                        <h4 style="color: var(--color-text-label); margin-top: var(--spacing-4);">Contato do Suporte</h4>
+                        <p>Email: suporte@seusite.com</p>
+                    `
+                }
+            };
+
+            function openModal(type) {
+                const content = modalContent[type];
+                if (content && modalOverlay && modalTitle && modalBody) { // Adicionado verificação para modalTitle e modalBody
+                    modalTitle.textContent = content.title;
+                    modalBody.innerHTML = content.body;
+                    modalOverlay.classList.add('is-visible');
+                }
+            }
+
+            function closeModal() {
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('is-visible');
+                }
+            }
+
+            // Eventos para ABRIR o modal
+            if (openContaBtn) {
+                openContaBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (profileDropdown) profileDropdown.classList.add('hidden');
+                    openModal('conta');
+                });
+            }
+
+            if (openAjudaBtn) {
+                openAjudaBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (profileDropdown) profileDropdown.classList.add('hidden');
+                    openModal('ajuda');
+                });
+            }
+
+            // Eventos para FECHAR o modal
+            if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            if (modalOverlay) modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) closeModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('is-visible')) { // Adicionado verificação para modalOverlay
+                    closeModal();
+                }
+            });
+
+            // NOVO: Lógica para carregar usuários no Painel de Administração
+            // Apenas se for a página de admin (verificando se 'userList' existe) e o usuário for administrador
+            const userListDisplay = document.getElementById('userList');
+            if (userListDisplay && userRole === 'admin') { // userListDisplay só deve existir na página de admin
+                fetchAndDisplayUsers();
+            }
+        }
+    }
+
+    //inicia banco
+    try {
+        // Criar índice para 'username' para buscas de unicidade e login
+        await db.createIndex({
+            index: { fields: ['username'] }
+        });
+        // Criar índice para 'email' para buscas de unicidade no cadastro
+        await db.createIndex({
+            index: { fields: ['email'] }
+        });
+
+    } catch (err) {
+        // O erro 409 significa que o índice já existe, o que é normal.
+        // Outros erros devem ser logados.
+        if (err.status !== 409) {
+            console.error("Erro ao criar índice no banco de dados:", err);
+            showAuthMessage('Erro ao preparar o banco de dados. Recarregue a página.', 'error');
+        } else {
+            console.log("Índices já existentes, pulando a criação.");
         }
     }
 });
