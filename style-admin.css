@@ -138,5 +138,71 @@ body {
 }
 
 /* Status do Usuário */
-.status.active { color: var(--color-success); }
-.status.banned { color: var(--color-error); }
+.status.active { 
+    color: var(--color-success); 
+}
+
+.status.banned { 
+    color: var(--color-error); 
+}
+
+
+/* Estilos para o Modal de Edição */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--color-darker-bg, #18181b);
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--color-white);
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Novo Estilo para o Botão de Editar */
+.btn-warning {
+    background-color: #f59e0b; 
+    border-radius: 0.375rem;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+

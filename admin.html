@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style-admin.css">
 </head>
+
 <body>
     <div class="main-container">
         <header class="header">
             <h1>Painel de Administração</h1>
-            <p>Gerencie filmes e usuários da plataforma. <a href="index.html" style="color: var(--color-purple-400);">Voltar para Home</a></p>
+            <p>Gerencie filmes e usuários da plataforma. <a href="index.html"
+                    style="color: var(--color-purple-400);">Voltar para Home</a></p>
         </header>
 
         <section id="movie-management" class="panel-section">
@@ -29,8 +32,10 @@
                         <input type="number" id="movieYear" class="form-input" required>
                     </div>
                     <div class="input-group">
-                        <label for="movieGenre">Gênero</label>
-                        <input type="text" id="movieGenre" class="form-input" required>
+                        <label for="movieCategory">Categoria</label>
+                        <input type="text" id="movieCategory" list="category-list" class="form-input" required>
+                        <datalist id="category-list">
+                        </datalist>
                     </div>
                     <div class="input-group">
                         <label for="moviePoster">URL do Pôster</label>
@@ -55,10 +60,36 @@
                 <div id="userList"></div>
             </div>
         </section>
+
+        <div id="editUrlModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h2>Editar URLs do Filme</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </header>
+                <div class="modal-body">
+                    <form id="editUrlForm">
+                        <input type="hidden" id="editMovieId">
+                        <div class="input-group">
+                            <label for="editPosterUrl">Nova URL do Pôster</label>
+                            <input type="url" id="editPosterUrl" class="form-input" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="editTrailerUrl">Nova URL do Trailer (YouTube)</label>
+                            <input type="url" id="editTrailerUrl" class="form-input" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
     <script src="admin.js"></script>
 </body>
+
 </html>

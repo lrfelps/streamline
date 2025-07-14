@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoutButton = document.getElementById('logoutButton');
     const adminLink = document.querySelector('a[href="admin.html"]');
     const userAvatar = document.getElementById('user-avatar');
+    const navbarCategoriesGrid = document.getElementById('navbar-categories-grid');
 
     // Modais
     const accountModal = document.getElementById('accountModal');
@@ -93,9 +94,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         gridElement.appendChild(movieCard);
     }
     
+    async function displayNavbarCategories() {
+        if (!navbarCategoriesGrid) return;
+        try {
+            const result = await db.find({
+                selector: { type: 'movie' },
+                fields: ['category']
+            });
+            const uniqueCategories = [...new Set(result.docs.map(doc => doc.category).filter(Boolean))];
+            
+            navbarCategoriesGrid.innerHTML = '';
+            uniqueCategories.forEach(category => {
+                const categoryLink = document.createElement('a');
+                categoryLink.href = `#`;
+                categoryLink.className = 'text-white hover:text-purple-400';
+                categoryLink.textContent = category;
+                navbarCategoriesGrid.appendChild(categoryLink);
+            });
+        } catch(e) {
+            console.error("Erro ao exibir categorias na navbar", e);
+        }
+    }
+    
     // Funções dos Modais
     function openTrailerModal(videoId) {
-        playerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/W0LHT__gW3Y?autoplay=1&mute=1&loop=1&playlist=W0LHT__gW3Y&controls=0&showinfo=0&autohide=1&modestbranding=12{videoId}?autoplay=1&rel=0&controls=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        // CORREÇÃO APLICADA AQUI
+        playerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
         trailerModal.classList.add('is-visible');
     }
 
@@ -181,4 +205,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Carregamento dos dados iniciais
     await fetchCurrentUser();
     await fetchAndDisplayMovies();
+    await displayNavbarCategories();
 });
