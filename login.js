@@ -1,7 +1,7 @@
 
 const usersDB = new PouchDB('brainwashing');
 
-// --- Elementos de Autenticação (Login/Cadastro) ---
+//Login/Cadastro
 const authMessageElement = document.getElementById('authMessage');
 const loginForm = document.getElementById('loginForm');
 const usernameInput = document.getElementById('username');
@@ -12,16 +12,17 @@ const regPasswordInput = document.getElementById('regPassword');
 const openRegisterFromLoginButton = document.getElementById('openRegisterFromLogin');
 const openLoginFromRegisterButton = document.getElementById('openLoginFromRegister');
 
-// --- Event Listeners para alternar entre Login e Cadastro ---
+
+
 if (openRegisterFromLoginButton && openLoginFromRegisterButton) {
     openRegisterFromLoginButton.addEventListener('click', (e) => {
-        e.preventDefault(); // Evita que o link '#' mude a URL
+        e.preventDefault();
         document.getElementById('loginFormContainer').style.display = 'none';
         document.getElementById('registerFormContainer').style.display = 'block';
     });
 
     openLoginFromRegisterButton.addEventListener('click', (e) => {
-        e.preventDefault(); // Evita que o link '#' mude a URL
+        e.preventDefault(); 
         document.getElementById('loginFormContainer').style.display = 'block';
         document.getElementById('registerFormContainer').style.display = 'none';
     });
@@ -109,7 +110,7 @@ if (registerForm) {
     });
 }
 
-// --- Lógica de Login de Usuário ---
+//logica login
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -150,7 +151,7 @@ if (loginForm) {
     });
 }
 
-// --- Lógica de Logout ---
+//logica logout
 const logoutButton = document.getElementById('logoutButton');
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
@@ -159,7 +160,7 @@ if (logoutButton) {
     });
 }
 
-// --- Lógica de Inicialização e Proteção de Página ---
+//inicializa index
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await usersDB.createIndex({
@@ -180,8 +181,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!loggedInUser) {
             window.location.href = 'login.html';
         } else {
-            document.getElementById('currentUsername').textContent = loggedInUser;
-            document.getElementById('loggedInInfo').style.display = 'block';
+            document.getElementById('currentUsername').textContent = loggedInUser;            
         }
     }
 });
