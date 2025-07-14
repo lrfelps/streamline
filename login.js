@@ -1,4 +1,3 @@
-// login.js - Versão Final Corrigida
 document.addEventListener('DOMContentLoaded', async () => {
     // Se o usuário já está logado, redireciona para a página principal
     if (localStorage.getItem('loggedInUser')) {
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const db = new PouchDB('brainwashing');
 
-    // Forms e Elementos
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const openRegisterFromLoginButton = document.getElementById('openRegisterFromLogin');
@@ -17,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const adminSecretPasswordGroup = document.querySelector('.admin-secret-password-group');
     const adminSecretPasswordInput = document.getElementById('adminSecretPassword');
 
-    // Alternar entre formulários
+    //troca login pra cad
     if (openRegisterFromLoginButton && openLoginFromRegisterButton) {
         openRegisterFromLoginButton.addEventListener('click', (e) => {
             e.preventDefault();
@@ -31,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Lógica para mostrar/ocultar senha de admin
+    //esconde senha
     if (isAdminToggle && adminSecretPasswordGroup) {
         isAdminToggle.addEventListener('change', function () {
             adminSecretPasswordGroup.classList.toggle('is-visible', this.checked);
@@ -39,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Lógica de Login
+    //logica login
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();

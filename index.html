@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamLine - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-stone-900">
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-8 transition-colors duration-500">
         <div class="container mx-auto flex items-center justify-between h-16">
             <div class="flex items-center space-x-8">
@@ -16,24 +17,14 @@
                     <li><a href="#" class="text-white font-semibold text-sm">Início</a></li>
                     <li><a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm">Séries</a></li>
                     <li><a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm">Filmes</a></li>
-                    <li class="relative group">
-                        <a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm flex items-center py-5">
-                            Categorias <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1 transition-transform group-hover:rotate-180"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-max hidden group-hover:block bg-stone-900/80 backdrop-blur-md border border-white/10 rounded-lg shadow-lg p-4">
-                            <div class="grid grid-cols-3 gap-x-8 gap-y-2">
-                                <a href="#" class="text-white hover:text-purple-400">Ação</a> <a href="#" class="text-white hover:text-purple-400">Comédia</a> <a href="#" class="text-white hover:text-purple-400">Drama</a>
-                                <a href="#" class="text-white hover:text-purple-400">Ficção</a> <a href="#" class="text-white hover:text-purple-400">Terror</a> <a href="#" class="text-white hover:text-purple-400">Romance</a>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="flex items-center space-x-4">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white cursor-pointer hover:text-purple-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
                 <div class="relative">
                     <button id="profileButton" class="flex items-center space-x-2">
-                        <img src="https://placehold.co/40x40/4c1d95/f5f5f4?text=SL" alt="Avatar do Usuário" class="w-8 h-8 rounded-md object-cover">
+                        <div id="user-avatar" class="w-9 h-9 rounded-md bg-purple-700 flex items-center justify-center text-white text-xl">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
                     </button>
                     <div id="profileDropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-stone-900/80 backdrop-blur-md border border-white/10 rounded-lg shadow-lg py-2">
                         <div class="px-4 py-2 text-sm text-stone-300">Logado como <strong id="currentUsername" class="text-white"></strong></div>
@@ -47,26 +38,57 @@
             </div>
         </div>
     </nav>
-    <header class="h-screen bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a09/1f1f1f?text=Filme+em+Destaque');">
-        <div class="h-full bg-gradient-to-t from-stone-900 to-transparent"></div>
+
+    <header class="header-video-container">
+        <iframe
+            src="https://www.youtube.com/embed/W0LHT__gW3Y?autoplay=1&mute=1&loop=1&playlist=W0LHT__gW3Y&controls=0&showinfo=0&autohide=1&modestbranding=1"
+            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="video-background">
+        </iframe>
+        <div class="header-overlay"></div>
     </header>
-    <main class="container mx-auto py-12 px-4">
+
+    <main class="container mx-auto py-12 px-4 -mt-48 relative z-10">
         <h2 class="text-2xl font-bold text-white mb-4">Populares</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <div class="bg-stone-800 h-64 rounded-lg"></div> <div class="bg-stone-800 h-64 rounded-lg"></div> <div class="bg-stone-800 h-64 rounded-lg"></div>
-            <div class="bg-stone-800 h-64 rounded-lg"></div> <div class="bg-stone-800 h-64 rounded-lg"></div> <div class="bg-stone-800 h-64 rounded-lg"></div>
-        </div>
-        <div class="h-screen"></div>
-    </main>
-    <div id="modalOverlay" class="modal-overlay">
-        <div id="modalContent" class="auth-container modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle" class="form-title">Título do Modal</h2>
-                <button id="closeModalBtn" class="close-button">&times;</button>
+        <div id="popular-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             </div>
-            <div id="modalBody" class="modal-body"><p>Conteúdo de exemplo do modal...</p></div>
+
+        <h2 class="text-2xl font-bold text-white mb-4 mt-12">Adicionados Recentemente</h2>
+        <div id="recent-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            </div>
+    </main>
+
+    <div id="accountModal" class="modal-overlay">
+        <div class="auth-container modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="form-title">Minha Conta</h2>
+                <button id="closeAccountBtn" class="close-button">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body p-8">
+                </div>
         </div>
     </div>
+    
+    <div id="iconModal" class="modal-overlay">
+        <div class="auth-container modal-content">
+            <div class="modal-header">
+                <h2 class="form-title">Escolha seu Avatar</h2>
+                <button id="closeIconBtn" class="close-button">&times;</button>
+            </div>
+            <div class="p-8">
+                <div id="icon-grid" class="grid grid-cols-6 gap-4">
+                    </div>
+                <button id="saveIconBtn" class="btn-primary mt-6">Salvar Avatar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="trailerModal" class="modal-overlay">
+        <div class="trailer-content">
+            <button id="closeTrailerBtn" class="close-button">&times;</button>
+            <div id="youtube-player-container"></div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
     <script src="app.js"></script>

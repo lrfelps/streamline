@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamLine - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body class="body-custom-bg">
@@ -43,22 +45,18 @@
                     <div class="input-group">
                         <label for="regEmail">E-mail</label>
                         <input type="email" id="regEmail" required class="form-input">
-                        <span id="emailError" class="error-message"></span>
                     </div>
                     <div class="input-group">
                         <label for="regUsername">Nome de Usuário</label>
                         <input type="text" id="regUsername" required class="form-input">
-                        <span id="usernameError" class="error-message"></span>
                     </div>
                     <div class="input-group">
                         <label for="regPassword">Senha</label>
                         <input type="password" id="regPassword" required class="form-input">
-                        <span id="passwordError" class="error-message"></span>
                     </div>
                     <div class="input-group">
                         <label for="regConfirmPassword">Confirmar Senha</label>
                         <input type="password" id="regConfirmPassword" required class="form-input">
-                        <span id="confirmPasswordError" class="error-message"></span>
                     </div>
                     <div class="input-group admin-toggle-group">
                         <label class="switch">
@@ -70,7 +68,6 @@
                     <div class="input-group admin-secret-password-group">
                         <label for="adminSecretPassword">Senha Secreta de Admin</label>
                         <input type="password" id="adminSecretPassword" class="form-input">
-                        <span id="adminSecretPasswordError" class="error-message"></span>
                     </div>
                     <button type="submit" class="btn-primary">Cadastrar</button>
                 </form>
@@ -78,9 +75,9 @@
                     <p>Já tem uma conta? <a href="#" id="openLoginFromRegister">Faça Login</a></p>
                 </div>
             </div>
-            <p id="authMessage" class="auth-message"></p>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
     <script src="login.js"></script>
