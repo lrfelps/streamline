@@ -218,6 +218,118 @@ body {
 }
 
 /* ===================================== */
+/* 7. Estilos para o Interruptor (Toggle Switch) */
+/* ===================================== */
+
+.toggle-admin {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    /* Espaçamento entre o switch e o label */
+    margin-bottom: var(--spacing-6);
+    /* Adiciona espaço abaixo do toggle */
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3.5rem;
+    /* 56px */
+    height: 1.75rem;
+    /* 28px */
+}
+
+/* Oculta o input padrão do checkbox */
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Estilo do "slider" (o fundo do interruptor) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-placeholder);
+    /* Cor de fundo quando desligado */
+    transition: .4s;
+    border-radius: 1.75rem;
+    /* Arredondado */
+}
+
+/* Estilo do "thumb" (o círculo que desliza) */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.25rem;
+    /* 20px */
+    width: 1.25rem;
+    /* 20px */
+    left: 0.25rem;
+    /* 4px */
+    bottom: 0.25rem;
+    /* 4px */
+    background-color: var(--color-white);
+    transition: .4s;
+    border-radius: 50%;
+    /* Círculo */
+}
+
+/* Quando o input está checado (ligado) */
+.toggle-switch input:checked+.slider {
+    background-image: linear-gradient(to right, var(--color-purple-600), var(--color-blue-600));
+    /* Gradiente quando ligado */
+}
+
+/* Move o thumb para a direita quando checado */
+.toggle-switch input:checked+.slider:before {
+    transform: translateX(1.75rem);
+    /* Move o thumb 28px para a direita (56px - 28px = 28px) */
+}
+
+/* Estilo do label ao lado do switch */
+.toggle-label {
+    font-size: var(--font-size-base);
+    /* Tamanho de fonte base */
+    color: var(--color-text-label);
+    /* Cor do texto */
+    cursor: pointer;
+    /* Indica que é clicável */
+}
+
+/* ===================================== */
+/* 8. Estilos para o grupo de senha secreta do Admin (visibilidade controlada por JS) */
+/* ===================================== */
+.admin-secret-password-group {
+    /* Por padrão, começa oculto e colapsado */
+    max-height: 0;
+    /* Colapsa o elemento */
+    opacity: 0;
+    /* Torna-o invisível */
+    overflow: hidden;
+    /* Esconde o conteúdo que transborda */
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
+    /* Transição suave */
+    margin-top: 0;
+    /* Remove a margem quando oculto */
+}
+
+/* Quando a classe 'is-visible' é adicionada pelo JavaScript */
+.admin-secret-password-group.is-visible {
+    max-height: 100px;
+    /* Altura suficiente para o input e a mensagem de erro. Ajuste se precisar de mais espaço. */
+    opacity: 1;
+    /* Torna-o visível */
+    margin-top: var(--spacing-6);
+    /* Adiciona a margem superior quando visível, consistente com form-spacing */
+}
+
+
+/* ===================================== */
 /* 9. Estados do Formulário */
 /* ===================================== */
 
@@ -243,7 +355,7 @@ body {
 }
 
 /* ===================================== */
-/* 10. Estilos do Modal                  */
+/* 10. Estilos do Modal */
 /* ===================================== */
 .modal-content {
     position: relative;
@@ -260,3 +372,9 @@ body {
     transition: transform 0.3s ease;
 }
 
+/* ===================================== */
+/* Adicionado: Classe para ocultar elementos (usada pelo JS) */
+/* ===================================== */
+.hidden {
+    display: none !important; /* Garante que o elemento seja ocultado */
+}

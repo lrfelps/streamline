@@ -64,6 +64,23 @@
                             placeholder="••••••••">
                         <p class="error-message" id="confirmPasswordError"></p>
                     </div>
+
+                    <!-- Interruptor "Sou Administrador" (ÚNICO) -->
+                    <div class="input-group toggle-admin">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="isAdminToggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <label for="isAdminToggle" class="toggle-label">Sou Administrador</label>
+                    </div>
+
+                    <!-- Campo de Senha Secreta (ÚNICO) -->
+                    <div class="input-group admin-secret-password-group">
+                        <label for="adminSecretPassword">Senha Secreta de Administrador</label>
+                        <input type="password" id="adminSecretPassword" class="form-input" placeholder="••••••••">
+                        <p class="error-message" id="adminSecretPasswordError"></p>
+                    </div>
+
                     <button type="submit" class="btn-primary">
                         Cadastrar
                     </button>

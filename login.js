@@ -1,3 +1,8 @@
+// login.js
+
+// ===================================
+// 1. INICIALIZAÇÃO DO BANCO DE DADOS E REFERÊNCIAS GLOBAIS
+// ===================================
 const db = new PouchDB('brainwashing');
 
 //mens global
@@ -20,12 +25,23 @@ const emailError = document.getElementById('emailError');
 const usernameError = document.getElementById('usernameError');
 const passwordError = document.getElementById('passwordError');
 const confirmPasswordError = document.getElementById('confirmPasswordError');
+const adminSecretPasswordError = document.getElementById('adminSecretPasswordError'); // Adicionado: Elemento de erro para a senha secreta do admin
 
 //alterna entre login e cadastro
 const openRegisterFromLoginButton = document.getElementById('openRegisterFromLogin');
 const openLoginFromRegisterButton = document.getElementById('openLoginFromRegister');
 
 const logoutButton = document.getElementById('logoutButton');
+
+// Adicionado: Elementos do interruptor de administrador e campo de senha secreta
+const isAdminToggle = document.getElementById('isAdminToggle');
+const adminSecretPasswordGroup = document.querySelector('.admin-secret-password-group');
+const adminSecretPasswordInput = document.getElementById('adminSecretPassword');
+
+
+// ===================================
+// 2. FUNÇÕES AUXILIARES
+// ===================================
 
 // Função para exibir mensagem de erro específica de um campo
 function showError(element, message) {
@@ -38,7 +54,6 @@ function showError(element, message) {
 function clearError(element) {
     if (element) {
         element.textContent = '';
-
     }
 }
 
@@ -57,31 +72,6 @@ function clearAuthMessage() {
         authMessageElement.className = 'auth-message'; // Volta para a classe base
     }
 }
-
-
-//efetiva form
-if (openRegisterFromLoginButton && openLoginFromRegisterButton) {
-    openRegisterFromLoginButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('loginFormContainer').style.display = 'none';
-        document.getElementById('registerFormContainer').style.display = 'block';
-        clearAuthMessage();
-        clearError(emailError);
-        clearError(usernameError);
-        clearError(passwordError);
-        clearError(confirmPasswordError);
-        if (registerForm) registerForm.reset();
-    });
-
-    openLoginFromRegisterButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('loginFormContainer').style.display = 'block';
-        document.getElementById('registerFormContainer').style.display = 'none';
-        clearAuthMessage();
-        if (loginForm) loginForm.reset();
-    });
-}
-
 
 //validações de campo
 function validateEmailField(email) {
@@ -137,7 +127,6 @@ function validateConfirmPasswordField(password, confirmPassword) {
     return true;
 }
 
-
 //gera id sequencial
 async function getNextUserId() {
     try {
@@ -164,133 +153,220 @@ async function getNextUserId() {
 }
 
 
-//logica cad
-if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearAuthMessage(); 
-
-        const email = regEmailInput.value.trim();
-        const username = regUsernameInput.value.trim();
-        const password = regPasswordInput.value;
-        const confirmPassword = regConfirmPasswordInput.value;
-
-        // Executa todas as validações de campo
-        const isEmailValid = validateEmailField(email);
-        const isUsernameValid = validateUsernameField(username);
-        const isPasswordValid = validatePasswordField(password);
-        const isConfirmPasswordValid = validateConfirmPasswordField(password, confirmPassword);
-
-        // Se alguma validação falhar, para por aqui
-        if (!isEmailValid || !isUsernameValid || !isPasswordValid || !isConfirmPasswordValid) {
-            showAuthMessage('Por favor, corrija os erros no formulário.', 'error');
-            return;
-        }
-
-        try {
-            const existingUsernameDoc = await db.find({
-                selector: { username: username }
-            });
-            if (existingUsernameDoc.docs.length > 0) {
-                showError(usernameError, 'Este nome de usuário já existe. Escolha outro.');
-                showAuthMessage('Nome de usuário já em uso.', 'error');
-                return;
-            }
-            const existingEmailDoc = await db.find({
-                selector: { email: email }
-            });
-            if (existingEmailDoc.docs.length > 0) {
-                showError(emailError, 'Este e-mail já está cadastrado.');
-                showAuthMessage('E-mail já em uso.', 'error');
-                return;
-            }
-
-            const newUserId = await getNextUserId();
-
-            const userDoc = {
-                _id: newUserId, // Usando o ID sequencial gerado
-                email: email, // Adicionando o email
-                username: username,
-                password: password, // Lembre-se: Em um app real, a senha DEVE ser hashada!
-                createdAt: new Date().toISOString()
-            };
-
-            await db.put(userDoc);
-            showAuthMessage(`Usuário '${username}' cadastrado com sucesso! Agora você pode fazer login.`, 'success');
-            registerForm.reset(); 
-            
-            setTimeout(() => {
-                document.getElementById('loginFormContainer').style.display = 'block';
-                document.getElementById('registerFormContainer').style.display = 'none';
-                clearAuthMessage();
-            }, 1200);
-
-        } catch (err) {
-            console.error('Erro ao cadastrar o usuário:', err);
-            if (err.status === 409) {
-                 showAuthMessage('Conflito: Usuário ou e-mail já existe.', 'error');
-            } else {
-                showAuthMessage('Erro ao cadastrar o usuário. Tente novamente.', 'error');
-            }
-        }
-    });
-}
-
-
-//logica login
-if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearAuthMessage(); 
-
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value;
-
-        if (!username || !password) {
-            showAuthMessage('Por favor, preencha todos os campos.', 'error');
-            return;
-        }
-
-        try {
-            // Busca o usuário pelo nome de usuário
-            const result = await db.find({
-                selector: { username: username },
-                limit: 1
-            });
-
-            if (result.docs.length > 0) {
-                const user = result.docs[0];
-                if (user.password === password) { // Lembre-se: Senha DEVE ser hashada!
-                    localStorage.setItem('loggedInUser', user.username);
-                    showAuthMessage('can you say?...', 'success');                 
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1000);
-                } else {
-                    showAuthMessage('Senha incorreta.', 'error');
-                }
-            } else {
-                showAuthMessage('Usuário não encontrado.', 'error');
-            }
-        } catch (err) {
-            console.error('Erro ao tentar fazer login:', err);
-            showAuthMessage('Ocorreu um erro ao fazer login.', 'error');
-        }
-    });
-}
-
-
-//logout
-if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('loggedInUser');
-        window.location.href = 'login.html';
-    });
-}
-
-
-//inicia banco
+// ===================================
+// 3. LÓGICA PRINCIPAL (EXECUTADA APÓS O DOM CARREGAR)
+// ===================================
 document.addEventListener('DOMContentLoaded', async () => {
+
+    // Lógica do Interruptor 'Sou Administrador'
+    if (isAdminToggle && adminSecretPasswordGroup && adminSecretPasswordInput && adminSecretPasswordError) {
+        isAdminToggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Usa classList para controlar a visibilidade via CSS (para transições)
+                adminSecretPasswordGroup.classList.add('is-visible'); 
+                adminSecretPasswordInput.setAttribute('required', 'required'); 
+            } else {
+                // Usa classList para controlar a visibilidade via CSS
+                adminSecretPasswordGroup.classList.remove('is-visible'); 
+                adminSecretPasswordInput.removeAttribute('required'); 
+                adminSecretPasswordInput.value = ''; 
+                adminSecretPasswordError.textContent = ''; 
+            }
+        });
+
+        // Garante que o estado inicial do campo de senha secreta esteja correto ao carregar a página
+        // Se o checkbox NÃO estiver marcado ao carregar, o campo deve estar oculto.
+        if (!isAdminToggle.checked) {
+            adminSecretPasswordGroup.classList.remove('is-visible');
+            adminSecretPasswordInput.removeAttribute('required');
+        }
+    }
+
+    // Lógica para alternar entre formulários de Login e Cadastro
+    if (openRegisterFromLoginButton && openLoginFromRegisterButton) {
+        openRegisterFromLoginButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginFormContainer').style.display = 'none';
+            document.getElementById('registerFormContainer').style.display = 'block';
+            clearAuthMessage();
+            clearError(emailError);
+            clearError(usernameError);
+            clearError(passwordError);
+            clearError(confirmPasswordError);
+            clearError(adminSecretPasswordError); // Limpa erro da senha secreta ao alternar
+            if (registerForm) registerForm.reset();
+            // Garante que o campo adminSecretPassword esteja oculto ao mudar para o formulário de registro
+            if (isAdminToggle) {
+                isAdminToggle.checked = false;
+                adminSecretPasswordGroup.classList.remove('is-visible');
+                adminSecretPasswordInput.removeAttribute('required');
+                adminSecretPasswordInput.value = '';
+            }
+        });
+
+        openLoginFromRegisterButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginFormContainer').style.display = 'block';
+            document.getElementById('registerFormContainer').style.display = 'none';
+            clearAuthMessage();
+            if (loginForm) loginForm.reset();
+        });
+    }
+
+    //logica cad
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearAuthMessage(); 
+
+            const email = regEmailInput.value.trim();
+            const username = regUsernameInput.value.trim();
+            const password = regPasswordInput.value;
+            const confirmPassword = regConfirmPasswordInput.value;
+
+            // Limpa mensagens de erro anteriores para o campo da senha secreta
+            if (adminSecretPasswordError) {
+                adminSecretPasswordError.textContent = '';
+            }
+
+            // Validação da senha secreta de administrador (frontend)
+            let isAdminValid = true;
+            if (isAdminToggle && isAdminToggle.checked) {
+                const secretPassword = adminSecretPasswordInput ? adminSecretPasswordInput.value : '';
+                const requiredSecretPassword = "calabresinhafrita"; // A senha secreta esperada
+
+                if (secretPassword !== requiredSecretPassword) {
+                    showError(adminSecretPasswordError, 'Senha secreta incorreta.');
+                    if (adminSecretPasswordInput) adminSecretPasswordInput.focus();
+                    isAdminValid = false;
+                }
+            }
+
+            // Executa todas as validações de campo
+            const isEmailValid = validateEmailField(email);
+            const isUsernameValid = validateUsernameField(username);
+            const isPasswordValid = validatePasswordField(password);
+            const isConfirmPasswordValid = validateConfirmPasswordField(password, confirmPassword);
+
+            // Se alguma validação falhar (incluindo a do admin), para por aqui
+            if (!isEmailValid || !isUsernameValid || !isPasswordValid || !isConfirmPasswordValid || !isAdminValid) {
+                showAuthMessage('Por favor, corrija os erros no formulário.', 'error');
+                return;
+            }
+
+            try {
+                // Busca unicidade de username
+                const existingUsernameDoc = await db.find({
+                    selector: { username: username }
+                });
+                if (existingUsernameDoc.docs.length > 0) {
+                    showError(usernameError, 'Este nome de usuário já existe. Escolha outro.');
+                    showAuthMessage('Nome de usuário já em uso.', 'error');
+                    return;
+                }
+                // Busca unicidade de email
+                const existingEmailDoc = await db.find({
+                    selector: { email: email }
+                });
+                if (existingEmailDoc.docs.length > 0) {
+                    showError(emailError, 'Este e-mail já está cadastrado.');
+                    showAuthMessage('E-mail já em uso.', 'error');
+                    return;
+                }
+
+                const newUserId = await getNextUserId();
+                const userDoc = {
+                    _id: newUserId,
+                    email: email, // Adicionando o email
+                    username: username,
+                    password: password, // Lembre-se: Em um app real, a senha DEVE ser hashada!
+                    isAdmin: isAdminToggle ? isAdminToggle.checked : false, // Salva o status de admin
+                    createdAt: new Date().toISOString()
+                };
+
+                await db.put(userDoc);
+                showAuthMessage(`Usuário '${username}' cadastrado com sucesso! Agora você pode fazer login.`, 'success');
+                registerForm.reset(); 
+                
+                // Oculta o campo de senha secreta após o cadastro bem-sucedido
+                if (isAdminToggle) {
+                    isAdminToggle.checked = false; // Desmarca o toggle
+                    adminSecretPasswordGroup.classList.remove('is-visible'); // Oculta o campo
+                    adminSecretPasswordInput.removeAttribute('required');
+                    adminSecretPasswordInput.value = '';
+                    adminSecretPasswordError.textContent = '';
+                }
+
+                setTimeout(() => {
+                    document.getElementById('loginFormContainer').style.display = 'block';
+                    document.getElementById('registerFormContainer').style.display = 'none';
+                    clearAuthMessage();
+                }, 1200);
+
+            } catch (err) {
+                console.error('Erro ao cadastrar o usuário:', err);
+                if (err.status === 409) {
+                    showAuthMessage('Conflito: Usuário ou e-mail já existe.', 'error');
+                } else {
+                    showAuthMessage('Erro ao cadastrar o usuário. Tente novamente.', 'error');
+                }
+            }
+        });
+    }
+
+    //logica login
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearAuthMessage(); 
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!username || !password) {
+                showAuthMessage('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+
+            try {
+                // Busca o usuário pelo nome de usuário
+                const result = await db.find({
+                    selector: { username: username },
+                    limit: 1
+                });
+
+                if (result.docs.length > 0) {
+                    const user = result.docs[0];
+                    if (user.password === password) { // Lembre-se: Senha DEVE ser hashada!
+                        localStorage.setItem('loggedInUser', user.username);
+                        localStorage.setItem('isAdmin', user.isAdmin ? 'true' : 'false'); // Salva o status de admin no localStorage
+                        showAuthMessage('Login bem-sucedido! Redirecionando...', 'success'); 
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        showAuthMessage('Senha incorreta.', 'error');
+                    }
+                } else {
+                    showAuthMessage('Usuário não encontrado.', 'error');
+                }
+            } catch (err) {
+                console.error('Erro ao tentar fazer login:', err);
+                showAuthMessage('Ocorreu um erro ao fazer login.', 'error');
+            }
+        });
+    }
+
+    //logout
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('isAdmin'); // Remove o status de admin ao deslogar
+            window.location.href = 'login.html';
+        });
+    }
+
+    //inicia banco
     try {
         // Criar índice para 'username' para buscas de unicidade e login
         await db.createIndex({
@@ -302,33 +378,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
     } catch (err) {
-        // O erro 409 significa que o índice já existe, o que é normal.
-        // Outros erros devem ser logados.
         if (err.status !== 409) {
             console.error("Erro ao criar índice no banco de dados:", err);
-            showAuthMessage('Erro ao preparar o banco de dados. Recarregue a página.', 'error');
+            showAuthMessage('DEU RUIM', 'error');
         } else {
-             console.log("Índices já existentes, pulando a criação.");
+            console.log("Índices já existentes, pulando a criação.");
         }
     }
 
-    // Lógica de Redirecionamento (se o usuário está logado ou não)
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    // Verifica se estamos na página de login pelo ID do formulário
+    const loggedInUsername = localStorage.getItem('loggedInUser');
     const onLoginPage = !!document.getElementById('loginFormContainer');
 
     //obriga a logar
     if (onLoginPage) {
-        if (loggedInUser) {
+        if (loggedInUsername) {
             window.location.href = 'index.html';
         }
     } else {
-        if (!loggedInUser) {
+        if (!loggedInUsername) {
             window.location.href = 'login.html';
         } else {
             const currentUsernameElement = document.getElementById('currentUsername');
             if (currentUsernameElement) {
-                currentUsernameElement.textContent = loggedInUser;
+                currentUsernameElement.textContent = loggedInUsername;
             }
         }
     }
