@@ -1,18 +1,19 @@
-/* Ajuste do layout principal para páginas com conteúdo extenso */
-        body {
-            background-attachment: fixed; /* Mantém o gradiente fixo durante o scroll */
-        }
-        .main-container {
-            width: 100%;
-            max-width: 1200px; /* Aumenta a largura máxima para o painel */
-            margin: 0 auto;
-            padding: var(--spacing-8) var(--spacing-4);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-8); /* Espaço entre os cards */
+/* Variáveis CSS (essenciais para o CSS abaixo funcionar) */
+        :root {
+            --color-text-primary: #e7e5e4; /* stone-200 */
+            --color-text-secondary: #a8a29e; /* stone-400 */
+            --color-placeholder: #78716c; /* stone-500 */
+            --color-error: #ef4444; /* red-500 */
+            --color-success: #4ade80; /* green-400 */
+
+            --spacing-1: 0.25rem; /* 4px */
+            --spacing-2: 0.5rem;  /* 8px */
+            --spacing-3: 0.75rem; /* 12px */
+            --spacing-4: 1rem;    /* 16px */
+            --spacing-8: 2rem;    /* 32px */
         }
 
-        /* Estilo para a lista de itens (filmes/usuários) */
+        /* Os estilos que você enviou */
         .list-item {
             display: flex;
             justify-content: space-between;
@@ -21,11 +22,12 @@
             padding: var(--spacing-3) var(--spacing-4);
             border-radius: 0.5rem; /* rounded-lg */
             margin-bottom: var(--spacing-2);
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease-in-out; /* Adicionado transição */
         }
         .list-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
+
         .list-item-info p {
             margin: 0;
             color: var(--color-text-primary);
@@ -39,7 +41,7 @@
             display: flex;
             gap: var(--spacing-2);
         }
-        
+
         /* Botões de ação secundários (Banir, Editar, etc.) */
         .btn-secondary, .btn-danger {
             padding: var(--spacing-1) var(--spacing-3);
@@ -56,15 +58,90 @@
             background-color: var(--color-placeholder); /* stone-500 */
         }
         .btn-secondary:hover {
-            background-color: #a8a29e; /* stone-400 */
-            transform: translateY(-1px);
+            background-color: var(--color-text-secondary); /* Use uma cor da paleta para consistência, e.g., stone-400 */
+            transform: translateY(-0.125rem); /* Consistente com btn-primary */
         }
         .btn-danger {
             background-color: var(--color-error); /* red-500 */
         }
         .btn-danger:hover {
             background-color: #dc2626; /* red-600 */
-            transform: translateY(-1px);
+            transform: translateY(-0.125rem); /* Consistente com btn-primary */
+        }
+
+        .panel-section {
+            background-color: rgba(255, 255, 255, 0.05); /* Mesma base de cor */
+            backdrop-filter: blur(12px); /* Efeito de blur */
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 1rem; /* Borda arredondada */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            width: 100%; /* Ocupa a largura total do main-container */
+        }
+
+        /* Estilos adicionais mínimos para que a página não fique completamente "branca" */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0c0a09; /* Cor de fundo mínima para ver algo */
+            color: var(--color-text-primary);
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 75rem; /* 1200px */
+            margin: 0 auto;
+            padding: var(--spacing-8) var(--spacing-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-8);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .header h1 {
+            color: white; /* Cor mínima para o h1 */
+            font-size: 3rem; /* Tamanho mínimo para o h1 */
+        }
+
+        .header p {
+            color: var(--color-text-secondary); /* Cor mínima para o p do header */
+        }
+
+        .form-title {
+            color: white; /* Cor mínima para o título do formulário */
+            text-align: center;
+        }
+
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 0.5rem;
+            padding: var(--spacing-2) var(--spacing-4);
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-image: linear-gradient(to right, #9333ea, #2563eb);
+            color: white;
+            padding: var(--spacing-3) var(--spacing-4);
+            border-radius: 0.5rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .input-group label {
+            color: var(--color-text-secondary);
+        }
+
+        .form-spacing > *:not(:last-child) {
+            margin-bottom: var(--spacing-6);
         }
 
         /* Status do Usuário */

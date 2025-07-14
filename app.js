@@ -1,233 +1,156 @@
-let loggedInUser = null;
+document.addEventListener('DOMContentLoaded', () => {
 
-// Referências aos elementos da Página Principal
-const accessRestrictedButtons = document.querySelectorAll('.access-restricted');
-const loggedInInfo = document.getElementById('loggedInInfo');
-const currentUsernameSpan = document.getElementById('currentUsername');
-const logoutButton = document.getElementById('logoutButton');
+    // ===================================
+    // 1. SELEÇÃO DE ELEMENTOS DO DOM
+    // ===================================
+    // Navbar
+    const navbar = document.getElementById('navbar');
+    
+    // Dropdown de Perfil
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const currentUsername = document.getElementById('currentUsername');
+    const logoutButton = document.getElementById('logoutButton');
+    
+    // Modal
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const openContaBtn = document.getElementById('openContaModal');
+    const openAjudaBtn = document.getElementById('openAjudaModal');
 
-// Referências que serão preenchidas APÓS o modal ser carregado dinamicamente
-let loginModal, closeButton, modalMessageElement;
-let loginFormContainer, registerFormContainer;
-let openRegisterFromLoginBtn, openLoginFromRegisterBtn;
-let loginForm, registerForm;
 
-// Função para exibir mensagens no modal
-function showModalMessage(msg, type = 'error') {
-    if (modalMessageElement) {
-        modalMessageElement.textContent = msg;
-        modalMessageElement.style.color = type === 'success' ? 'green' : 'red';
-    } else {
-        console.error("Elemento 'modalMessageElement' não encontrado.");
-    }
-}
+    // ===================================
+    // 2. DADOS E ESTADO DA APLICAÇÃO
+    // ===================================
+    // Simulação de um usuário logado
+    const loggedInUser = {
+        name: 'Usuário' // Em um app real, isso viria do login
+    };
 
-// Funções para controlar a visibilidade dos formulários no modal
-function showLoginForm() {
-    if (loginFormContainer && registerFormContainer) {
-        loginFormContainer.style.display = 'block';
-        registerFormContainer.style.display = 'none';
-        showModalMessage(''); // Limpa mensagens ao alternar
-    }
-}
-
-function showRegisterForm() {
-    if (loginFormContainer && registerFormContainer) {
-        loginFormContainer.style.display = 'none';
-        registerFormContainer.style.display = 'block';
-        showModalMessage(''); // Limpa mensagens ao alternar
-    }
-}
-
-// Funções para abrir e fechar o modal
-function openModal() {
-    if (loginModal) {
-        loginModal.style.display = 'flex'; // Usar flex para centralizar
-        showModalMessage(''); // Limpa mensagens anteriores
-        if (loginForm) loginForm.reset();
-        if (registerForm) registerForm.reset();
-        showLoginForm(); // Sempre mostra o formulário de login por padrão ao abrir o modal
-    }
-}
-
-function closeModal() {
-    if (loginModal) {
-        loginModal.style.display = 'none';
-    }
-}
-
-// --- Lógica de Verificação de Login e Logout ---
-
-// Verifica o status de login ao carregar a página
-async function checkLoginStatus() {
-    const storedUser = localStorage.getItem('loggedInUser');
-    if (storedUser) {
-        loggedInUser = storedUser;
-        currentUsernameSpan.textContent = loggedInUser;
-        loggedInInfo.style.display = 'block';
-    } else {
-        loggedInInfo.style.display = 'none';
-    }
-}
-
-// Lógica de Logout
-logoutButton.addEventListener('click', () => {
-    localStorage.removeItem('loggedInUser');
-    loggedInUser = null;
-    checkLoginStatus(); // Atualiza a UI para mostrar que deslogou
-    alert('Você foi desconectado.');
-});
-
-// --- Lógicas dos Formulários (Login e Cadastro) ---
-
-// Lógica de Registro de Usuário
-async function handleRegisterSubmit(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('regUsername').value;
-    const password = document.getElementById('regPassword').value;
-
-    if (!username || !password) {
-        showModalMessage('Por favor, preencha todos os campos de registro.');
-        return;
+    if (currentUsername && loggedInUser) {
+        currentUsername.textContent = loggedInUser.name;
     }
 
-    try {
-        await db.get(username);
-        showModalMessage('Usuário já existe. Escolha outro nome de usuário.');
-    } catch (err) {
-        if (err.name === 'not_found') {
-            try {
-                await db.put({
-                    _id: username,
-                    password: password 
-                });
-                showModalMessage('Usuário cadastrado com sucesso!', 'success');
-                registerForm.reset();
 
-                // Após o cadastro bem-sucedido, volta para o formulário de login
-                setTimeout(() => {
-                    showLoginForm(); 
-                    if (document.getElementById('username')) {
-                        document.getElementById('username').value = username; 
-                    }
-                }, 1500);
-
-            } catch (putErr) {
-                console.error('Erro ao cadastrar usuário:', putErr);
-                showModalMessage('Erro ao cadastrar usuário. Tente novamente.');
-            }
-        } else {
-            console.error('Erro ao buscar usuário para registro:', err);
-            showModalMessage('Erro ao verificar usuário existente. Tente novamente.');
+    // ===================================
+    // 3. LÓGICA DA NAVBAR (EFEITO DE SCROLL)
+    // ===================================
+    window.addEventListener('scroll', () => {
+        if (navbar && window.scrollY > 50) {
+            navbar.classList.add('bg-stone-900', 'shadow-lg');
+        } else if (navbar) {
+            navbar.classList.remove('bg-stone-900', 'shadow-lg');
         }
-    }
-}
-
-// Lógica de Login
-async function handleLoginSubmit(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if (!username || !password) {
-        showModalMessage('Por favor, preencha todos os campos de login.');
-        return;
-    }
-
-    try {
-        const userDoc = await db.get(username);
-        if (userDoc.password === password) {
-            showModalMessage('Login bem-sucedido!', 'success');
-            localStorage.setItem('loggedInUser', username);
-            loggedInUser = username;
-            currentUsernameSpan.textContent = loggedInUser;
-            loggedInInfo.style.display = 'block';
-            
-            setTimeout(() => {
-                closeModal();
-                alert('Bem-vindo, ' + username + '!');
-                
-                // Implemente aqui o que acontece após o login:
-                // Redirecionar, mostrar conteúdo oculto, etc.
-            }, 1000); 
-
-        } else {
-            showModalMessage('Senha incorreta.');
-        }
-    } catch (err) {
-        if (err.name === 'not_found') {
-            showModalMessage('Usuário não encontrado.');
-        } else {
-            console.error('Erro ao fazer login:', err);
-            showModalMessage('Erro ao tentar fazer login. Tente novamente.');
-        }
-    }
-}
-
-// --- Carregamento Dinâmico do Modal e Atribuição de Event Listeners ---
-
-document.addEventListener('DOMContentLoaded', async () => {
-    // Carrega o conteúdo do modal de login
-    try {
-        const response = await fetch('login.html');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const modalHtml = await response.text();
-        document.getElementById('modal-placeholder').innerHTML = modalHtml;
-
-        // Agora que o modal está no DOM, obtemos as referências e anexamos os listeners
-        loginModal = document.getElementById('loginModal');
-        closeButton = loginModal.querySelector('.close-button');
-        modalMessageElement = document.getElementById('modalMessage');
-
-        loginFormContainer = document.getElementById('loginFormContainer');
-        registerFormContainer = document.getElementById('registerFormContainer');
-
-        openRegisterFromLoginBtn = document.getElementById('openRegisterFromLogin');
-        openLoginFromRegisterBtn = document.getElementById('openLoginFromRegister');
-
-        loginForm = document.getElementById('loginForm');
-        registerForm = document.getElementById('registerForm');
-
-        // Atribui os event listeners aos elementos do modal
-        if (closeButton) closeButton.addEventListener('click', closeModal);
-        if (openRegisterFromLoginBtn) openRegisterFromLoginBtn.addEventListener('click', showRegisterForm);
-        if (openLoginFromRegisterBtn) openLoginFromRegisterBtn.addEventListener('click', showLoginForm);
-        if (loginForm) loginForm.addEventListener('submit', handleLoginSubmit);
-        if (registerForm) registerForm.addEventListener('submit', handleRegisterSubmit);
-
-        // Adiciona event listener para fechar o modal clicando fora dele
-        window.addEventListener('click', (event) => {
-            if (event.target == loginModal) {
-                closeModal();
-            }
-        });
-
-    } catch (error) {
-        console.error('Erro ao carregar o modal de login:', error);
-        // Exiba uma mensagem de erro na página principal se o modal não puder ser carregado
-        const header = document.querySelector('.header');
-        const errorMessage = document.createElement('p');
-        errorMessage.style.color = 'red';
-        errorMessage.textContent = 'Não foi possível carregar a funcionalidade de login. Por favor, tente novamente mais tarde.';
-        if (header) header.after(errorMessage);
-    }
-
-    // Atribui listeners aos botões de acesso restrito (estes já existem no DOM)
-    accessRestrictedButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (!loggedInUser) {
-                openModal(); // Apenas abre o modal, que mostrará o login por padrão
-            } else {
-                alert('Você já está logado como ' + loggedInUser + '! Acessando conteúdo...');
-                // Lógica para acessar o conteúdo completo aqui
-            }
-        });
     });
 
-    // Verifica o status de login ao carregar a página
-    checkLoginStatus();
+
+    // ===================================
+    // 4. LÓGICA DO DROPDOWN DE PERFIL
+    // ===================================
+    if (profileButton && profileDropdown) {
+        // Abrir/Fechar ao clicar no botão
+        profileButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Fechar ao clicar fora
+        window.addEventListener('click', (event) => {
+            if (!profileDropdown.classList.contains('hidden')) {
+                if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            }
+        });
+    }
+
+
+    // ===================================
+    // 5. LÓGICA DO MODAL
+    // ===================================
+    const modalContent = {
+        conta: {
+            title: 'Gerenciar Conta',
+            body: `
+                <p>Aqui você pode alterar suas informações de perfil, como nome, e-mail e senha.</p>
+                <div class="form-spacing" style="margin-top: var(--spacing-6);">
+                    <div class="input-group">
+                        <label for="userName">Nome</label>
+                        <input type="text" id="userName" class="form-input" value="${loggedInUser.name}">
+                    </div>
+                    <div class="input-group">
+                        <label for="userEmail">Email</label>
+                        <input type="email" id="userEmail" class="form-input" value="seu-email@exemplo.com">
+                    </div>
+                    <button class="btn-primary" style="margin-top: var(--spacing-4);">Salvar Alterações</button>
+                </div>
+            `
+        },
+        ajuda: {
+            title: 'Central de Ajuda',
+            body: `
+                <p>Bem-vindo à nossa central de ajuda. Se você estiver com problemas, verifique as perguntas frequentes abaixo ou entre em contato com o suporte.</p>
+                <h4 style="color: var(--color-text-label); margin-top: var(--spacing-4);">Como altero minha senha?</h4>
+                <p>Você pode alterar sua senha na seção 'Gerenciar Conta'.</p>
+                <h4 style="color: var(--color-text-label); margin-top: var(--spacing-4);">Contato do Suporte</h4>
+                <p>Email: suporte@seusite.com</p>
+            `
+        }
+    };
+
+    function openModal(type) {
+        const content = modalContent[type];
+        if (content && modalOverlay) {
+            modalTitle.textContent = content.title;
+            modalBody.innerHTML = content.body;
+            modalOverlay.classList.add('is-visible');
+        }
+    }
+
+    function closeModal() {
+        if (modalOverlay) {
+            modalOverlay.classList.remove('is-visible');
+        }
+    }
+
+    // Eventos para ABRIR o modal
+    if (openContaBtn) {
+        openContaBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (profileDropdown) profileDropdown.classList.add('hidden');
+            openModal('conta');
+        });
+    }
+
+    if (openAjudaBtn) {
+        openAjudaBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (profileDropdown) profileDropdown.classList.add('hidden');
+            openModal('ajuda');
+        });
+    }
+
+    // Eventos para FECHAR o modal
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', (event) => {
+        if (event.target === modalOverlay) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
+            closeModal();
+        }
+    });
+
+
+    // ===================================
+    // 6. LÓGICA DE LOGOUT
+    // ===================================
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            window.location.href = 'index.html'; 
+        });
+    }
+
 });
