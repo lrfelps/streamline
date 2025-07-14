@@ -12,27 +12,21 @@
 <body>
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-8 transition-colors duration-500">
         <div class="container mx-auto flex items-center justify-between h-16">
-            
-            <!-- Lado Esquerdo-->
+
             <div class="flex items-center space-x-8">
-                <!-- Logo -->
                 <a href="#" class="text-2xl font-bold text-purple-500">StreamLine</a>
 
-                <!-- Links Principais (escondidos em telas pequenas) -->
                 <ul class="hidden md:flex items-center space-x-6">
                     <li><a href="#" class="text-white font-semibold text-sm">Início</a></li>
                     <li><a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm">Séries</a></li>
                     <li><a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm">Filmes</a></li>
                     <li class="relative group">
-                        <!--ajuste de padding-->
                         <a href="#" class="text-stone-300 hover:text-white transition-colors duration-300 text-sm flex items-center py-5">
                             Categorias
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1 transition-transform group-hover:rotate-180">
                                 <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                             </svg>
                         </a>
-                        
-                        
                         <div class="absolute top-full left-1/2 -translate-x-1/2 w-max hidden group-hover:block bg-stone-900/80 backdrop-blur-md border border-white/10 rounded-lg shadow-lg p-4">
                             <div class="grid grid-cols-3 gap-x-8 gap-y-2">
                                 <a href="#" class="dropdown-item">Ação</a>
@@ -53,25 +47,22 @@
                 </ul>
             </div>
 
-            <!--Lado Direito-->
             <div class="flex items-center space-x-4">
-                <!--Ícone -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white cursor-pointer hover:text-purple-400 transition-colors">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
 
-                               
                 <div class="relative">
                     <button id="profileButton" class="flex items-center space-x-2">
                         <img src="https://placehold.co/40x40/4c1d95/f5f5f4?text=SL" alt="Avatar do Usuário" class="w-8 h-8 rounded-md object-cover">
-                    </button>                                       
+                    </button>
                     <div id="profileDropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-stone-900/80 backdrop-blur-md border border-white/10 rounded-lg shadow-lg py-2">
                         <div class="px-4 py-2 text-sm text-stone-300">
                             Logado como <strong id="currentUsername" class="text-white"></strong>
                         </div>
                         <hr class="border-white/10 my-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-stone-300 hover:bg-white/10">Conta</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-stone-300 hover:bg-white/10">Ajuda</a>
+                        <a href="#" id="openContaModal" class="block px-4 py-2 text-sm text-stone-300 hover:bg-white/10">Conta</a>
+                        <a href="#" id="openAjudaModal" class="block px-4 py-2 text-sm text-stone-300 hover:bg-white/10">Ajuda</a>
                         <a href="admin.html" class="block px-4 py-2 text-sm text-stone-300 hover:bg-white/10">Administrador</a>
                         <hr class="border-white/10 my-1">
                         <button id="logoutButton" class="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-red-500/20">
@@ -79,18 +70,13 @@
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Conteúdo de Exemplo para preencher a página e permitir a rolagem -->
-    <header class="h-screen bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a09/1f1f1f?text=Filme+em+Destaque');">
+            </div> </div> </nav> <header class="h-screen bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a09/1f1f1f?text=Filme+em+Destaque');">
         <div class="h-full bg-gradient-to-t from-stone-900 to-transparent"></div>
     </header>
+
     <main class="container mx-auto py-12 px-4">
         <h2 class="text-2xl font-bold text-white mb-4">Populares</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <!--cards-->
             <div class="bg-stone-800 h-64 rounded-lg"></div>
             <div class="bg-stone-800 h-64 rounded-lg"></div>
             <div class="bg-stone-800 h-64 rounded-lg"></div>
@@ -98,14 +84,23 @@
             <div class="bg-stone-800 h-64 rounded-lg"></div>
             <div class="bg-stone-800 h-64 rounded-lg"></div>
         </div>
-        <div class="h-screen"></div>
-    </main>
+        <div class="h-screen"></div> </main>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div id="modalContent" class="auth-container modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="form-title">Título do Modal</h2>
+                <button id="closeModalBtn" class="close-button">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <p>Conteúdo de exemplo do modal...</p>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
     <script src="login.js"></script>
     <script src="app.js"></script>
-
-</body>
-
+    </body>
 </html>

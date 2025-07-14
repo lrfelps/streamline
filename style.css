@@ -247,3 +247,22 @@ body {
 .auth-message.error {
     color: var(--color-error);
 }
+
+/* ===================================== */
+/* 10. Estilos do Modal                  */
+/* ===================================== */
+.modal-content {
+    position: relative;
+    /* NOVO: Aumenta a largura máxima para um modal bem maior */
+    max-width: 56rem; /* 896px - Equivalente a max-w-4xl do Tailwind */
+    width: 90%;
+    
+    /* BOA PRÁTICA: Limita a altura e permite scroll se o conteúdo for grande */
+    max-height: 90vh; /* Ocupa no máximo 90% da altura da tela */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical SE necessário */
+
+    /* Efeito de "zoom" ao aparecer */
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
