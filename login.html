@@ -1,54 +1,83 @@
-<!-- login.html -->
-<!-- Este arquivo contém apenas a estrutura do modal de login/cadastro -->
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        
-        <!-- Container do formulário de Login (visível por padrão ao abrir o modal) -->
-        <div id="loginFormContainer">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Usuário:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Senha:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Entrar</button>
-                </div>
-                <p style="text-align: center;">
-                    Não tem uma conta? 
-                    <button type="button" id="openRegisterFromLogin" class="switch-form-button">Cadastre-se aqui</button>
-                </p>
-            </form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamLine - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="body-custom-bg">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+
+        <div class="header">
+            <h1>StreamLine</h1>
+            <p>Faça login ou cadastre-se para começar a maratona.</p>
         </div>
 
-        <!-- Container do formulário de Cadastro (oculto por padrão) -->
-        <div id="registerFormContainer">
-            <h2>Cadastrar Novo Usuário</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="regUsername">Usuário:</label>
-                    <input type="text" id="regUsername" name="regUsername" required>
-                </div>
-                <div class="form-group">
-                    <label for="regPassword">Senha:</label>
-                    <input type="password" id="regPassword" name="regPassword" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Cadastrar</button>
-                </div>
-                <p style="text-align: center;">
-                    Já tem uma conta? 
-                    <button type="button" id="openLoginFromRegister" class="switch-form-button">Faça Login</button>
+        <div id="authContainer" class="auth-container">
+
+            <div id="loginFormContainer" class="form-container-padding">
+                <h2 class="form-title">Login</h2>
+                <form id="loginForm" class="form-spacing">
+                    <div class="input-group">
+                        <label for="username">Nome de Usuário</label>
+                        <input type="text" id="username" required class="form-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" required class="form-input">
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        Entrar
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Não tem uma conta? <a href="#" id="openRegisterFromLogin">Cadastre-se</a>
                 </p>
-            </form>
+            </div>
+
+            <div id="registerFormContainer" class="form-container-padding" style="display: none;">
+                <h2 class="form-title">Criar Conta</h2>
+                <form id="registerForm" class="form-spacing">
+                    <div class="input-group">
+                        <label for="regEmail">E-mail</label>
+                        <input type="email" id="regEmail" required class="form-input"
+                            placeholder="seuemail@exemplo.com">
+                        <p class="error-message" id="emailError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="regUsername">Escolha um Nome de Usuário</label>
+                        <input type="text" id="regUsername" required class="form-input" placeholder="minha_conta">
+                        <p class="error-message" id="usernameError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="regPassword">Crie uma Senha</label>
+                        <input type="password" id="regPassword" required class="form-input" placeholder="••••••••">
+                        <p class="error-message" id="passwordError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="regConfirmPassword">Repita a Senha</label>
+                        <input type="password" id="regConfirmPassword" required class="form-input"
+                            placeholder="••••••••">
+                        <p class="error-message" id="confirmPasswordError"></p>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        Cadastrar
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Já tem uma conta? <a href="#" id="openLoginFromRegister">Faça Login</a>
+                </p>
+            </div>
         </div>
-        
-        <p id="modalMessage"></p>
+        <p id="authMessage" class="auth-message"></p>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

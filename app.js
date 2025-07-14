@@ -1,11 +1,3 @@
-const db = new PouchDB('Brainwashing'); 
-
-db.info().then(function (info) {
-  console.log(info);
-})
-
-
-
 let loggedInUser = null;
 
 // Referências aos elementos da Página Principal
@@ -155,7 +147,8 @@ async function handleLoginSubmit(event) {
             
             setTimeout(() => {
                 closeModal();
-                alert('Bem-vindo, ' + username + '! Agora você tem acesso total.');
+                alert('Bem-vindo, ' + username + '!');
+                
                 // Implemente aqui o que acontece após o login:
                 // Redirecionar, mostrar conteúdo oculto, etc.
             }, 1000); 
